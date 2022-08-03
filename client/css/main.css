@@ -1,0 +1,57 @@
+#main-screen .title{
+	font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 500;
+    color: #1C4187;
+    font-size: 80px;
+    text-shadow: 3px 3px #00000030;
+    margin: 0px 0px 20px;
+}
+
+#main-screen .pseudo,#main-screen .gametag{
+	background-color: #bdd5ff;
+    border: 0px;
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 4px;
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 800;
+    color: #1C4187;
+	box-shadow: 2px 2px #00000020;
+}
+
+#main-screen .gametag{
+	width : 50px;
+	text-align : center;
+}
+
+#main-screen input:focus{
+	box-shadow: 2px 2px #1C4187;
+	outline : none;
+}
+
+#main-screen ::placeholder{
+	color: cornflowerblue;
+}
+
+#main-screen button{
+	background-color: #1C4187;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 4px;
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 800;
+    color: #bdd5ffee;
+    box-shadow: 2px 2px #00000040;
+}
+
+#main-screen .line{
+	height: 4px;
+    border-radius: 2px;
+    width: 200px;
+    background-color: #bdd5ff60;
+    margin: 20px;
+}
