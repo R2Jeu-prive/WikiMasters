@@ -1,12 +1,12 @@
 const fetch = require('node-fetch');
+let pages;
+let questions;
 
 function Init(){
-	Database = require("@replit/database");
-	db = new Database();
 	pages = [];
 	questions = [];
 	FillQuestionBuffer();
-	setInterval(FillQuestionBuffer,5000);
+	setInterval(FillQuestionBuffer,2000);
 }
 
 function FillPageBuffer(){
@@ -34,10 +34,10 @@ function FillPageBuffer(){
 			if(randomPage.title.split(" ").length > 3){
 				continue;
 			}
+            //filter out too small pages, and very long pages
 			if(randomPage.length < 20000 || randomPage.length > 90000){
 				continue;
 			}
-			//console.log("NEW PAGE : " + randomPage.title + " {" + randomPage.pageid + "}");
 			pages.push(randomPage);
 		}
 		console.log("BUFFERS : " + pages.length + "p " + questions.length + "q");
@@ -53,32 +53,32 @@ function FillQuestionBuffer(){
 		FillPageBuffer();
 		return;
 	}
-	//build url for page content request
+	//build url for one page content request
 	var pageId = pages[0].pageid;
 	var url = "https://fr.wikipedia.org/w/api.php";
 	var params = {action: "parse", format: "json", pageid: pageId.toString(), prop: "text", formatversion :"2", callback : ""};
 	url = url + "?origin=*";
 	Object.keys(params).forEach(function(key){url += "&" + key + "=" + params[key];});
 
-	//fetch request
-	pages.shift();
+    //remove page from pages
+    pages.shift();
+
+	//send request
 	fetch(url, {headers:{"User-Agent":"botWikiMastersQuizGame/1.0 (R2Jeu.prive@gmail.com)"}})
 	.then(function(response){
 		response.text().then(function(str){
+            //initial formating
 			str = str.substring(5, str.length - 1);
 			json = JSON.parse(str);
 			title = json.parse.title;
 			text = json.parse.text;
 			text = text.replace('\"','"');
 			description = GetDescriptionFromContent(text);
-			if(description){
-				if(!DescriptionHasTitleElements(title,description)){
-					console.log("NEW QUESTION {" + pageId + "}: " + title + " " + description);
-					questions.push(new Question(pageId,title,description));
-					console.log("BUFFERS : " + pages.length + "p " + questions.length + "q");
-					FillQuestionBuffer();
-				}
-			}
+            if(!description){return;}
+            if(DescriptionHasTitleElements(title, description)){return;}
+            console.log("NEW QUESTION {" + pageId + "}: " + title + " " + description);
+            questions.push(new Question(pageId,title,description));
+            console.log("BUFFERS : " + pages.length + "p " + questions.length + "q");
 		})
 	})
 	.catch(function(error){console.log(error);});

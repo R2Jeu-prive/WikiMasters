@@ -1,4 +1,4 @@
-games = [];
+let games = [];
 const Q = require("./question.js");
 
 class Game{
@@ -12,15 +12,19 @@ class Game{
 		this.question = null;
 		this.questionTime = null;
 	}
+
+    //sends all players lobby info needed
 	RefreshClients(){
 		let playerList = []
 		for (let player of this.players) {
 			playerList.push(player.pseudo);
 		}
 		for (let player of this.players) {
-			player.socket.emit("refreshLobby", {playerList : playerList, isHost : player.pseudo == this.players[0].pseudo, tag : tag});
+			player.socket.emit("refreshLobby", {playerList : playerList, isHost : player.pseudo == this.players[0].pseudo, tag : this.tag});
 		}
 	}
+
+    //inits gamescores and asks first question
 	Start(){
 		this.questionsAsked = 0;
 		for (let player of this.players) {
@@ -33,10 +37,10 @@ class Game{
 		this.timerRunning = true;
 		this.questionTime = Date.now();
 		this.questionsAsked += 1;
-		let a = Q.Fetch();
-		this.question = a;
-		let answerPool = [a.title,Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle()]
-
+		this.question = Q.Fetch();
+		let answerPool = [this.question.title,Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle()]
+        
+        //mix the answerPool
 		for (let i = 0; i < 6; i++) {
 			let k = Math.floor(Math.random() * 6);
 			let j = Math.floor(Math.random() * 6);
@@ -44,11 +48,16 @@ class Game{
 			answerPool[k] = answerPool[j];
 			answerPool[j] = temp;
 		}
+
+        //resets answer array and sends question to all players
 		this.answers = [];
 		for (let [i, player] of this.players.entries()) {
 			this.answers.push("");
 			this.scores[i].push(10000);
-			player.socket.emit("question", {description : this.question.description, titles : answerPool})
+			player.socket.emit("question", {
+                description : this.question.description,
+                titles : answerPool
+            });
 		}
 
 		setTimeout(this.CorrectAnswers.bind(this), 10000);
@@ -56,18 +65,28 @@ class Game{
 
 	CorrectAnswers(){
 		this.timerRunning = false;
-		let clientScores = []
+		let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
 		for (let [i,player] of this.players.entries()) {
+            //set wrong answers to score 10s
 			if(this.answers[i] != this.question.title){
 				this.scores[i][this.questionsAsked-1] = 10000;
 			}
+
+            //fill in clientScores to send to front
 			clientScores.push([player.pseudo])
 			for (let score of this.scores[i]) {
 				clientScores[i].push(score);
 			}
 		}
 		for (let [i,player] of this.players.entries()) {
-			player.socket.emit("correction", {answer : this.answers[i], time : this.scores[i][this.questionsAsked-1], correction : this.question.title + " " + this.question.description, pageid : this.question.id, scores : clientScores, isHost : player.pseudo == this.players[0].pseudo})
+			player.socket.emit("correction", {
+                answer : this.answers[i],
+                time : this.scores[i][this.questionsAsked-1],
+                correction : this.question.title + " " + this.question.description,
+                pageid : this.question.id,
+                scores : clientScores,
+                isHost : player.pseudo == this.players[0].pseudo
+            });
 		}
 	}
 }
@@ -104,7 +123,7 @@ function JoinGame(user, tag){
 	return false;//couldn't find game with this tag
 }
 
-function StartGame(socket){
+function ProcessStartGameRequest(socket){
 	for (let game of games) {
 		if(game.players[0].socket.id == socket.id){
 			game.Start();
@@ -113,7 +132,7 @@ function StartGame(socket){
 	}
 }
 
-function NextQuestion(socket){
+function ProcessNextQuestionRequest(socket){
 	for (let game of games) {
 		if(game.players[0].socket.id == socket.id){
 			game.AskQuestion();
@@ -122,7 +141,7 @@ function NextQuestion(socket){
 	}
 }
 
-function SaveAnswer(socket, answer){
+function ProcessAnswerRequest(socket, answer){
 	for (let [i, game] of games.entries()){
 		if(!game.timerRunning){
 			continue;
@@ -139,7 +158,7 @@ function SaveAnswer(socket, answer){
 	}
 }
 
-function PlayerLeft(player){
+function ProcessPlayerDisconnection(player){
 	for (let [i,game] of games.entries()){
 		for (let [j,gamePlayer] of game.players.entries()) {
 			if(gamePlayer.pseudo != player.pseudo){
@@ -175,4 +194,4 @@ function GenerateTag(){
 	return tag;
 }
 
-module.exports = { Game, CreateGame, PlayerLeft, JoinGame, StartGame, SaveAnswer, NextQuestion};
+module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest};
