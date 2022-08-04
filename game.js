@@ -30,8 +30,17 @@ class Game{
 		for (let player of this.players) {
 			this.scores.push([]);
 		}
-		this.AskQuestion();
+		this.Countdown();
 	}
+
+    Countdown(){
+        for (let [i, player] of this.players.entries()) {
+			player.socket.emit("countdown", 3);
+            setTimeout(player.socket.emit("countdown", 2), 500);
+            setTimeout(player.socket.emit("countdown", 1), 1000);
+            setTimeout(this.AskQuestion(), 1500);
+		}
+    }
 
 	AskQuestion(){
 		this.timerRunning = true;
@@ -135,7 +144,7 @@ function ProcessStartGameRequest(socket){
 function ProcessNextQuestionRequest(socket){
 	for (let game of games) {
 		if(game.players[0].socket.id == socket.id){
-			game.AskQuestion();
+			game.Countdown();
 			break;
 		}
 	}
