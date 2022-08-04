@@ -1,0 +1,8 @@
+#countdown-screen .number{
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 500;
+    color: #1C4187;
+    font-size: 150px;
+    text-shadow: 3px 1px #00000030;
+    margin: 0px 0px 20px;
+}
