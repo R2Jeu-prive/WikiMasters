@@ -159,8 +159,7 @@ function ProcessAnswerRequest(socket, answer){
 			if(gamePlayer.socket.id == socket.id){
 				game.answers[j] = answer
 				game.scores[j][game.questionsAsked-1] = Date.now()-game.questionTime;
-				console.log(game.answers)
-				console.log(game.scores)
+                socket.emit("wait", game.scores[j][game.questionsAsked-1]);
 				return;
 			}
 		}
