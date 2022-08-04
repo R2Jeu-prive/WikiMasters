@@ -28,6 +28,8 @@ routes.push(["/js/countdown","/client/js/countdown.js"])
 routes.push(["/css/countdown","/client/css/countdown.css"])
 routes.push(["/js/waiting","/client/js/waiting.js"])
 routes.push(["/css/waiting","/client/css/waiting.css"])
+routes.push(["/js/end","/client/js/waiting.js"])
+routes.push(["/css/end","/client/css/waiting.css"])
 for (let route of routes) {
 	router.get(route[0], function(req, res){
 		res.set('Content-Type', mime.getType(route[1].split(".")[1]));
@@ -75,6 +77,9 @@ io.on('connection', (socket) => {
 	})
 	socket.on("answer", (answer) => {
 		G.ProcessAnswerRequest(socket, answer);
+	})
+    socket.on("reset", () => {
+		G.ProcessResetRequest(socket);
 	})
 	socket.on('disconnect', (reason) => {
 		let user = U.GetUser(socket);

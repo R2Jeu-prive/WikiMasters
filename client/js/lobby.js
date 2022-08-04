@@ -7,6 +7,7 @@ $(document).ready(function() {
 		}
 		$("#lobby-screen .start-game").attr("hidden",!data.isHost);
         $("#loading-screen").addClass("hidden-screen");
+        $("#end-screen").addClass("hidden-screen");
         $("#lobby-screen").removeClass("hidden-screen");
 	})
 

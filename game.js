@@ -9,12 +9,13 @@ class Game{
 		this.scores = [];
 		this.timerRunning = false;
 		this.questionsAsked = 0;
+        this.questionsTotal = 2;
 		this.question = null;
 		this.questionTime = null;
 	}
 
     //sends all players lobby info needed
-	RefreshClients(){
+	RefreshLobby(){
 		let playerList = []
 		for (let player of this.players) {
 			playerList.push(player.pseudo);
@@ -98,6 +99,28 @@ class Game{
             });
 		}
 	}
+
+    ShowEndScreen(){
+        let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
+		for (let [i,player] of this.players.entries()) {
+            //set wrong answers to score 10s
+			if(this.answers[i] != this.question.title){
+				this.scores[i][this.questionsAsked-1] = 10000;
+			}
+
+            //fill in clientScores to send to front
+			clientScores.push([player.pseudo])
+			for (let score of this.scores[i]) {
+				clientScores[i].push(score);
+			}
+		}
+        for (let [i,player] of this.players.entries()) {
+            player.socket.emit("end", {
+                scores : clientScores,
+                isHost : player.pseudo == this.players[0].pseudo
+            })
+        }
+    }
 }
 
 function CreateGame(host){
@@ -107,7 +130,7 @@ function CreateGame(host){
 		}
 	}
 	games.push(new Game(host));
-	games[games.length-1].RefreshClients();
+	games[games.length-1].RefreshLobby();
 	console.log("CREATED GAME " + games[games.length-1].tag);
 	return true;
 }
@@ -126,7 +149,7 @@ function JoinGame(user, tag){
 		}
 		game.players.push(user);
 		console.log(user.pseudo + " JOINED " + game.tag);
-		game.RefreshClients();
+		game.RefreshLobby();
 		return true
 	}
 	return false;//couldn't find game with this tag
@@ -144,8 +167,12 @@ function ProcessStartGameRequest(socket){
 function ProcessNextQuestionRequest(socket){
 	for (let game of games) {
 		if(game.players[0].socket.id == socket.id){
-			game.Countdown();
-			break;
+            if(this.questionsTotal != this.questionsAsked){
+                game.Countdown();   
+            }else{
+                game.ShowEndScreen();
+            }
+			return;
 		}
 	}
 }
@@ -183,7 +210,16 @@ function ProcessPlayerDisconnection(player){
 				game.answers.splice(j, 1);
 				game.scores.splice(j, 1);
 			}
-			game.RefreshClients();
+			game.RefreshLobby();
+		}
+	}
+}
+
+function ProcessResetRequest(socket){
+    for (let game of games) {
+		if(game.players[0].socket.id == socket.id){
+            game.RefreshLobby();
+			return;
 		}
 	}
 }
@@ -202,4 +238,4 @@ function GenerateTag(){
 	return tag;
 }
 
-module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest};
+module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest, ProcessResetRequest};
