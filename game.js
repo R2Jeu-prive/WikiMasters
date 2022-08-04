@@ -167,7 +167,7 @@ function ProcessStartGameRequest(socket){
 function ProcessNextQuestionRequest(socket){
 	for (let game of games) {
 		if(game.players[0].socket.id == socket.id){
-            if(this.questionsTotal != this.questionsAsked){
+            if(game.questionsTotal != game.questionsAsked){
                 game.Countdown();   
             }else{
                 game.ShowEndScreen();
