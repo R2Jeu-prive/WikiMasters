@@ -1,4 +1,4 @@
-users = []
+let users = []
 function AddUser(socket){
 	users.push(new User(socket));
 }
@@ -18,11 +18,12 @@ function RenameUser(socket, newPseudo){
 	}
 	k = -1;
 	for(let [i,user] of users.entries()){
-		if(user.pseudo == newPseudo){
-			return false;
-		}
 		if(user.socket.id == socket.id){
-			k = i
+			k = i;
+            continue;
+		}
+        if(user.pseudo == newPseudo){
+			return false;
 		}
 	}
 	users[k].pseudo = newPseudo
