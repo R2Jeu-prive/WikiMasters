@@ -41,8 +41,8 @@ class Game{
 			player.socket.emit("countdown", 3);
             setTimeout(function(){player.socket.emit("countdown", 2)}, 500);
             setTimeout(function(){player.socket.emit("countdown", 1)}, 1000);
-            setTimeout(this.AskQuestion.bind(this), 1500);
 		}
+		setTimeout(this.AskQuestion.bind(this), 1500);
     }
 
 	AskQuestion(){
@@ -76,6 +76,7 @@ class Game{
 	}
 
 	CorrectAnswers(){
+		console.log("A)" + this.scores)
 		this.timerRunning = false;
 		let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
 		for (let [i,player] of this.players.entries()) {
