@@ -22,6 +22,8 @@ routes.push(["/js/correction","/client/js/correction.js"])
 routes.push(["/css/correction","/client/css/correction.css"])
 routes.push(["/js/error","/client/js/error.js"])
 routes.push(["/css/error","/client/css/error.css"])
+routes.push(["/js/loading","/client/js/loading.js"])
+routes.push(["/css/loading","/client/css/loading.css"])
 routes.push(["/css/countdown","/client/css/countdown.css"])
 routes.push(["/css/waiting","/client/css/waiting.css"])
 for (let route of routes) {

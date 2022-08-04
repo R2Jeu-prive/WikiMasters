@@ -6,6 +6,7 @@ $(document).ready(function() {
 			$("#lobby-screen .player-list").append("<li class='player'>" + player + "</li>")
 		}
 		$("#lobby-screen .start-game").attr("hidden",!data.isHost);
+        $("#loading-screen").addClass("hidden-screen");
         $("#lobby-screen").removeClass("hidden-screen");
 	})
 
