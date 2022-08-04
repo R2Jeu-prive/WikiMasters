@@ -27,6 +27,12 @@
 		<link rel="stylesheet" href="css/main">
 		<script src="/js/main"></script>
 	</div>
+    <div class="screen hidden-screen" id="error-screen">
+        <p class="message">Une erreur s'est produite</p>
+        <button class="back">Menu Principale</button>
+        <link rel="stylesheet" href="css/error">
+        <script src="/js/error"></script>
+    </div>
 	<div class="screen hidden-screen" id="lobby-screen">
 		<h1 class="title">Lobby TAG</h1>
 		<ul class="player-list"></ul>
@@ -34,6 +40,10 @@
 		<link rel="stylesheet" href="css/lobby">
 		<script src="/js/lobby"></script>
 	</div>
+    <div class="screen hidden-screen" id="countdown-screen">
+        <p class="number">3</p>
+        <link rel="stylesheet" href="css/countdown">
+    </div>
 	<div class="screen hidden-screen" id="question-screen">
 		<p class="description">... oui ...</p>
 		<button class="button" id="1">Alpha</button>
@@ -45,6 +55,11 @@
 		<link rel="stylesheet" href="css/question">
 		<script src="/js/question"></script>
 	</div>
+    <div class="screen hidden-screen" id="waiting-screen">
+        <p class="time">Tu as répondu en 2.543s</p>
+        <p class="sentence">On attends les autres joueurs</p>
+        <link rel="stylesheet" href="css/waiting">
+    </div>
 	<div class="screen hidden-screen" id="correction-screen">
 		<p class="my-answer"></p>
 		<p class="correction"></p>

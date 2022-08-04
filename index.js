@@ -20,7 +20,10 @@ routes.push(["/js/question","/client/js/question.js"])
 routes.push(["/css/question","/client/css/question.css"])
 routes.push(["/js/correction","/client/js/correction.js"])
 routes.push(["/css/correction","/client/css/correction.css"])
-routes.push(["/img/background","/client/img/background.jpeg"])
+routes.push(["/js/error","/client/js/error.js"])
+routes.push(["/css/error","/client/css/error.css"])
+routes.push(["/css/countdown","/client/css/countdown.css"])
+routes.push(["/css/waiting","/client/css/waiting.css"])
 for (let route of routes) {
 	router.get(route[0], function(req, res){
 		res.set('Content-Type', mime.getType(route[1].split(".")[1]));
