@@ -38,7 +38,7 @@ class Game{
 			player.socket.emit("countdown", 3);
             setTimeout(function(){player.socket.emit("countdown", 2)}, 500);
             setTimeout(function(){player.socket.emit("countdown", 1)}, 1000);
-            setTimeout(this.AskQuestion(), 1500);
+            setTimeout(this.AskQuestion, 1500);
 		}
     }
 
