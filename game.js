@@ -28,6 +28,8 @@ class Game{
     //inits gamescores and asks first question
 	Start(){
 		this.questionsAsked = 0;
+        this.answers = [];
+		this.scores = [];
 		for (let player of this.players) {
 			this.scores.push([]);
 		}
