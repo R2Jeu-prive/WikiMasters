@@ -36,8 +36,8 @@ class Game{
     Countdown(){
         for (let [i, player] of this.players.entries()) {
 			player.socket.emit("countdown", 3);
-            setTimeout(player.socket.emit("countdown", 2), 500);
-            setTimeout(player.socket.emit("countdown", 1), 1000);
+            setTimeout(() => {player.socket.emit("countdown", 2)}, 500);
+            setTimeout(() => {player.socket.emit("countdown", 1)}, 1000);
             setTimeout(this.AskQuestion(), 1500);
 		}
     }
