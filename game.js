@@ -11,6 +11,7 @@ class Game{
 		this.questionsAsked = 0;
         this.questionsTotal = 2;
 		this.question = null;
+        this.decoys = [];
 		this.questionTime = null;
 	}
 
@@ -50,16 +51,9 @@ class Game{
 		this.questionTime = Date.now();
 		this.questionsAsked += 1;
 		this.question = Q.Fetch();
-		let answerPool = [this.question.title,Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle(),Q.FetchTitle()]
-        
-        //mix the answerPool
-		for (let i = 0; i < 6; i++) {
-			let k = Math.floor(Math.random() * 6);
-			let j = Math.floor(Math.random() * 6);
-			let temp = answerPool[k];
-			answerPool[k] = answerPool[j];
-			answerPool[j] = temp;
-		}
+        this.decoys = [Q.Fetch(), Q.Fetch, Q.Fetch(), Q.Fetch(), Q.Fetch()];
+		let answerPool = [this.decoys[0].title, this.decoys[1].title, this.decoys[2].title, this.decoys[3].title, this.decoys[4].title]
+        answerPool.splice(Math.floor(Math.random() * 6), 0, this.question.title);
 
         //resets answer array and sends question to all players
 		this.answers = [];
@@ -91,12 +85,13 @@ class Game{
 				clientScores[i].push(score);
 			}
 		}
+        let pages = this.decoys.unshift(this.question);
 		for (let [i,player] of this.players.entries()) {
 			player.socket.emit("correction", {
                 answer : this.answers[i],
                 time : this.scores[i][this.questionsAsked-1],
                 correction : this.question.title + " " + this.question.description,
-                pageid : this.question.id,
+                pages : pages,
                 scores : clientScores,
                 isHost : player.pseudo == this.players[0].pseudo
             });
