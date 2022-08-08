@@ -69,5 +69,6 @@ $(document).ready(function() {
 	$("#correction-screen .next-question").on("click", function(){
 		socket.emit("nextQuestion");
 		$("#correction-screen").addClass("hidden-screen");
+        $("#loading-screen").removeClass("hidden-screen");
 	})
 });
