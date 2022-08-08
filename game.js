@@ -85,13 +85,13 @@ class Game{
 				clientScores[i].push(score);
 			}
 		}
-        let pages = this.decoys.unshift(this.question);
+        this.decoys.unshift(this.question);
 		for (let [i,player] of this.players.entries()) {
 			player.socket.emit("correction", {
                 answer : this.answers[i],
                 time : this.scores[i][this.questionsAsked-1],
                 correction : this.question.title + " " + this.question.description,
-                pages : pages,
+                pages : this.decoys,
                 scores : clientScores,
                 isHost : player.pseudo == this.players[0].pseudo
             });
