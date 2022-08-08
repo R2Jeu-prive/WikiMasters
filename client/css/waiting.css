@@ -1,0 +1,10 @@
+#waiting-screen p{
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 500;
+    color: #1C4187;
+    font-size: 30px;
+    text-shadow: 1px 1px #00000030;
+    margin: 0px 0px 40px;
+    width: 80%;
+    text-align: center;
+}

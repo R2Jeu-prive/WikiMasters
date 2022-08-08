@@ -131,7 +131,7 @@ function GetDescriptionFromContent(r){
 			continue;
 		}
 		//remove paragraphs that contain special strings that are false positive to description paragraph
-		if(paragraphs.at(-1).indexOf("/wiki/Discussion:") != -1 || paragraphs.at(-1).indexOf('class="bandeau-titre"') != -1 || paragraphs.at(-1).indexOf("Les points d'amélioration suivants sont les cas les plus fréquents") != -1){
+		if(paragraphs.at(-1).indexOf("/wiki/Discussion:") != -1 || paragraphs.at(-1).indexOf('class="bandeau-titre"') != -1 || paragraphs.at(-1).indexOf("Les points d'amélioration suivants sont les cas les plus fréquents") != -1 || paragraphs.at(-1).indexOf("sont citées, de les associer à des analyses faites par des sources secondaires.") != -1){
 		  paragraphs.pop();
 		  continue;
 		}

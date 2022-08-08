@@ -8,7 +8,11 @@ $(document).ready(function() {
 				$(this).addClass("hidden-screen");
 			}
 		})
-		$("#correction-screen .my-answer").text(data.answer + " est " + (data.time == 10000 ? "FAUX (+10s)" : ("VRAI (+" + data.time/1000 + "s)")))
+        if(data.answer == ""){
+            $("#correction-screen .my-answer").text("Temps écoulé (+10s)")
+        }else{
+            $("#correction-screen .my-answer").text(data.answer + " est " + (data.time == 10000 ? "FAUX (+10s)" : ("VRAI (+" + data.time/1000 + "s)")))
+        }
 		if(data.time == 10000){
 			$("#correction-screen .my-answer").addClass("my-answer-wrong");
 			$("#correction-screen .my-answer").removeClass("my-answer-right");
