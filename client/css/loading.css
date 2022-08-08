@@ -6,12 +6,13 @@ https://loading.io/css/
     position: relative;
     width: 80px;
     height: 80px;
+    transform: scale(2);
 }
 .lds-default div {
     position: absolute;
     width: 6px;
     height: 6px;
-    background: #fff;
+    background: #bdd5ffee;
     border-radius: 50%;
     animation: lds-default 1.2s linear infinite;
 }
