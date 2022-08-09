@@ -30,6 +30,7 @@ routes.push(["/js/waiting","/client/js/waiting.js"])
 routes.push(["/css/waiting","/client/css/waiting.css"])
 routes.push(["/js/end","/client/js/end.js"])
 routes.push(["/css/end","/client/css/end.css"])
+routes.push(["/css/phone","/client/css/phone.css"])
 for (let route of routes) {
 	router.get(route[0], function(req, res){
 		res.set('Content-Type', mime.getType(route[1].split(".")[1]));
