@@ -126,7 +126,7 @@ function GetDescriptionFromContent(r){
 			continue;
 		}
 		//remove paragraphs that ref to a help page other than Japonese help page
-		if(paragraphs.at(-1).indexOf("/wiki/Aide:") != -1 && paragraphs.at(-1).indexOf("/wiki/Aide:Japonais") == -1){
+		if(paragraphs.at(-1).indexOf("/wiki/Aide:") != -1 && paragraphs.at(-1).indexOf("/wiki/Aide:Japonais") == -1 && paragraphs.at(-1).indexOf("/wiki/Aide:Alphabet_phon") == -1){
 			paragraphs.pop();
 			continue;
 		}
