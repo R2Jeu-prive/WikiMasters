@@ -51,7 +51,7 @@ class Game{
 		this.questionTime = Date.now();
 		this.questionsAsked += 1;
 		this.question = Q.Fetch();
-        this.decoys = [Q.Fetch(), Q.Fetch, Q.Fetch(), Q.Fetch(), Q.Fetch()];
+        this.decoys = [Q.Fetch(), Q.Fetch(), Q.Fetch(), Q.Fetch(), Q.Fetch()];
 		let answerPool = [this.decoys[0].title, this.decoys[1].title, this.decoys[2].title, this.decoys[3].title, this.decoys[4].title]
         answerPool.splice(Math.floor(Math.random() * 6), 0, this.question.title);
 
