@@ -25,3 +25,15 @@ body{
 	opacity : 0;
 	pointer-events : none;
 }
+
+.start-of-page{
+    margin-top : auto;
+    width: 0px;
+    height: 0px;
+}
+
+.end-of-page{
+    margin-bottom: auto;
+    width: 0px;
+    height: 0px;
+}

@@ -17,6 +17,7 @@
 </head>
 <body>
 	<div class="screen" id="main-screen">
+        <div class="start-of-page"></div>
 		<h1 class="title">WikiMasters</h1>
 		<input class="pseudo" type="text" placeholder="Pseudo"/>
 		<div class="hori">
@@ -25,36 +26,46 @@
 		</div>
 		<div class="line"></div>
 		<button class="create-game">Créer Mon Lobby</button>
+        <div class="end-of-page"></div>
 		<link rel="stylesheet" href="css/main">
 		<script src="/js/main"></script>
 	</div>
     <div class="screen hidden-screen" id="loading-screen">
+        <div class="start-of-page"></div>
         <!--
             https://loading.io/css/
         -->
         <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="end-of-page"></div>
         <link rel="stylesheet" href="css/loading">
 		<script src="/js/loading"></script>
     </div>
     <div class="screen hidden-screen" id="error-screen">
+        <div class="start-of-page"></div>
         <p class="message">Une erreur s'est produite</p>
         <button class="back">Menu Principale</button>
+        <div class="end-of-page"></div>
         <link rel="stylesheet" href="css/error">
         <script src="/js/error"></script>
     </div>
 	<div class="screen hidden-screen" id="lobby-screen">
+        <div class="start-of-page"></div>
 		<h1 class="title">Lobby TAG</h1>
 		<ul class="player-list"></ul>
 		<button class="start-game">Démarrer</button>
+        <div class="end-of-page">
 		<link rel="stylesheet" href="css/lobby">
 		<script src="/js/lobby"></script>
 	</div>
     <div class="screen hidden-screen" id="countdown-screen">
+        <div class="start-of-page"></div>
         <p class="number">3</p>
+        <div class="end-of-page"></div>
         <link rel="stylesheet" href="css/countdown">
         <script src="/js/countdown"></script>
     </div>
 	<div class="screen hidden-screen" id="question-screen">
+        <div class="start-of-page"></div>
 		<p class="description">... oui ...</p>
 		<button class="button" id="1">Alpha</button>
 		<button class="button" id="2">Beta</button>
@@ -62,16 +73,20 @@
 		<button class="button" id="4">Delta</button>
 		<button class="button" id="5">Echo</button>
 		<button class="button" id="6">Foxtrot</button>
+        <div class="end-of-page"></div>
 		<link rel="stylesheet" href="css/question">
 		<script src="/js/question"></script>
 	</div>
     <div class="screen hidden-screen" id="waiting-screen">
+        <div class="start-of-page"></div>
         <p class="time">Tu as répondu en 2.543s</p>
         <p class="sentence">On attends les autres joueurs pour la correction</p>
+        <div class="end-of-page"></div>
         <link rel="stylesheet" href="css/waiting">
         <script src="/js/waiting"></script>
     </div>
 	<div class="screen hidden-screen" id="correction-screen">
+        <div class="start-of-page"></div>
 		<p class="my-answer"></p>
 		<p class="correction"></p>
         <div class="link-container">
@@ -84,13 +99,16 @@
         </div>
 		<ul class="scoreboard"></ul>
 		<button class="next-question">Question Suivante</button>
+        <div class="end-of-page"></div>
 		<link rel="stylesheet" href="css/correction">
 		<script src="/js/correction"></script>
 	</div>
     <div class="screen hidden-screen" id="end-screen">
+        <div class="start-of-page"></div>
         <p class="winner">Intel est Champion de WikiMasters !</p>
         <table class="table"></table>
         <button class="lobby">Retour au lobby</button>
+        <div class="end-of-page"></div>
 		<link rel="stylesheet" href="css/end">
 		<script src="/js/end"></script>
     </div>
