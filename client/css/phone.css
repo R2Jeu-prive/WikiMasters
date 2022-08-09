@@ -3,4 +3,12 @@
         font-size: 45px;
         text-shadow: 3px 1px #00000030;
     }
+
+    #lobby-screen .title{
+        font-size: 45px;
+    }
+
+    #lobby-screen .player-list{
+        width: 200px;
+    }
 }

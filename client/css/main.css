@@ -4,7 +4,7 @@
     color: #1C4187;
     font-size: 80px;
     text-shadow: 3px 3px #00000030;
-    margin: 0px 0px 20px;
+    margin: auto 0px 20px;
 }
 
 #main-screen .pseudo,#main-screen .gametag{
@@ -51,7 +51,7 @@
 }
 
 #main-screen button:hover{
-    background-color: #1D4690;
+    background-color: #2352a9;
     transition : background-color .1s;
 }
 
