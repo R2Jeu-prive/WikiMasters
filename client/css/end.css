@@ -5,6 +5,7 @@
     font-size: 40px;
     text-shadow: 2px 2px #00000030;
     margin: 0px 0px 20px;
+    text-align: center;
 }
 
 #end-screen .lobby{
@@ -36,6 +37,9 @@
     text-align: center;
     border-spacing: 3px;
     border-collapse: separate;
+    max-width: 90%;
+    overflow-x: auto;
+    display: block;
 }
 
 #end-screen .cells{
