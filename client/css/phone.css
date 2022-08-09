@@ -11,4 +11,12 @@
     #lobby-screen .player-list{
         width: 200px;
     }
+
+    #question-screen .description{
+        font-size: 24px;
+    }
+
+    #correction-screen .correction{
+        font-size: 24px;
+    }
 }
