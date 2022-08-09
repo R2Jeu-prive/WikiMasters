@@ -1,5 +1,6 @@
 @media screen and (max-width: 800px) {
     #main-screen .title{
         font-size: 45px;
+        text-shadow: 3px 1px #00000030;
     }
 }

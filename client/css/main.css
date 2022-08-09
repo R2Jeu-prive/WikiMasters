@@ -18,6 +18,7 @@
     font-weight: 800;
     color: #1C4187;
 	box-shadow: 2px 2px #00000020;
+    width: 230px;
 }
 
 #main-screen .gametag{
@@ -46,6 +47,16 @@
     font-weight: 800;
     color: #bdd5ffee;
     box-shadow: 2px 2px #00000040;
+    transition : background-color .1s;
+}
+
+#main-screen button:hover{
+    background-color: #1D4690;
+    transition : background-color .1s;
+}
+
+#main-screen button:focus{
+    outline: none;
 }
 
 #main-screen .line{
