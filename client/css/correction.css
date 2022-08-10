@@ -63,7 +63,9 @@
 }
 
 #correction-screen svg{
-    height: 30px;
+    height: 26px;
+    position: relative;
+    top: 4px;
 }
 
 #correction-screen .next-question{
