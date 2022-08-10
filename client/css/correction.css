@@ -62,10 +62,30 @@
     text-align: center;
 }
 
-#correction-screen svg{
+#correction-screen .icon-right{
     height: 26px;
     position: relative;
     top: 4px;
+    padding: 0px 3px;
+    border-radius: 5px;
+    background-color: #e3fde5bb;
+}
+
+#correction-screen .icon-right > path{
+    fill: #5eda5c;
+}
+
+#correction-screen .icon-wrong{
+    height: 26px;
+    position: relative;
+    top: 4px;
+    padding: 0px 3px;
+    border-radius: 5px;
+    background-color: #ffdfdfbb;
+}
+
+#correction-screen .icon-wrong > path{
+    fill: #da5c5c;
 }
 
 #correction-screen .next-question{
