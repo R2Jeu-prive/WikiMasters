@@ -35,30 +35,6 @@
 	color: cornflowerblue;
 }
 
-#main-screen button{
-	background-color: #1C4187;
-    border: none;
-    cursor: pointer;
-    margin: 5px;
-    padding: 10px 20px;
-    font-size: 20px;
-    border-radius: 4px;
-    font-family: 'Kantumruy Pro', sans-serif;
-    font-weight: 800;
-    color: #bdd5ffee;
-    box-shadow: 2px 2px #00000040;
-    transition : background-color .1s;
-}
-
-#main-screen button:hover{
-    background-color: #2352a9;
-    transition : background-color .1s;
-}
-
-#main-screen button:focus{
-    outline: none;
-}
-
 #main-screen .line{
 	height: 4px;
     border-radius: 2px;
