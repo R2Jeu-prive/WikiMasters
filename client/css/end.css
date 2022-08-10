@@ -10,6 +10,7 @@
 
 #end-screen .table{
     min-width: 20%;
+    max-width: 90%;
     background-color: #bdd5ffee;
     border: none;
     margin: 0px 0px 30px;
@@ -23,7 +24,6 @@
     text-align: center;
     border-spacing: 3px;
     border-collapse: separate;
-    max-width: 90%;
     overflow-x: auto;
     display: block;
 }

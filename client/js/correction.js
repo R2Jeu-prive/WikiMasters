@@ -1,13 +1,6 @@
 $(document).ready(function() {
 	socket.on("correction", (data) => {
 		console.log(data)
-		$(".screen").each(function(){
-			if($(this).attr('id') == "correction-screen"){
-				$(this).removeClass("hidden-screen");
-			}else{
-				$(this).addClass("hidden-screen");
-			}
-		})
         if(data.answer == ""){
             $("#correction-screen .my-answer").text("Temps écoulé (+10s)")
         }else{
@@ -67,6 +60,14 @@ $(document).ready(function() {
 			let time = min + ":" + sec + "." + mil;
 			$("#correction-screen .scoreboard").append("<li class='player'>" + shownPlayer[0] + ") " + shownPlayer[1] + " " + time + "</li>")
 		}
+        $(".screen").each(function(){
+			if($(this).attr('id') == "correction-screen"){
+				$(this).removeClass("hidden-screen");
+                $(this).scrollTop(0);
+			}else{
+				$(this).addClass("hidden-screen");
+			}
+		})
 	})
 
 	$("#correction-screen .next-question").on("click", function(){
