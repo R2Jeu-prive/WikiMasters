@@ -93,7 +93,8 @@ class Game{
                 correction : this.question.title + " " + this.question.description,
                 pages : this.decoys,
                 scores : clientScores,
-                isHost : player.pseudo == this.players[0].pseudo
+                isHost : player.pseudo == this.players[0].pseudo,
+                questionProgression : [this.questionsAsked, this.questionsTotal]
             });
 		}
 	}

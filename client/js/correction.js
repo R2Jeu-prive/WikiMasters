@@ -16,7 +16,7 @@ $(document).ready(function() {
 			$("#correction-screen .my-answer").addClass("my-answer-right");
             correct = true;
 		}
-		$("#correction-screen .correction").text("Correction : " + data.correction);
+		$("#correction-screen .correction").text("Correction Q" + data.questionProgression[0] + " : " + data.correction);
         $("#correction-screen .link").each(function(i){
             $(this).text("Wiki : " + data.pages[i].title);
             $(this).attr("href","http://fr.wikipedia.org/?curid=" + data.pages[i].id);
@@ -68,6 +68,11 @@ $(document).ready(function() {
             }
 			
 		}
+        if(data.questionProgression[0] == data.questionProgression[1]){
+            $("#correction-screen .next-question").text("Résultats");
+        }else{
+            $("#correction-screen .next-question").text("Question " + (data.questionProgression[0] + 1));
+        }
         $(".screen").each(function(){
 			if($(this).attr('id') == "correction-screen"){
 				$(this).removeClass("hidden-screen");
