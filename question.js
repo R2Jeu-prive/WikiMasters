@@ -99,6 +99,7 @@ function GetDescriptionFromContent(r){
 	startIndexes = [];
 	endIndexes = [];
 	paragraphs = [];
+    let startStrings = [" est ", " était ", " sont ", " étaient ", " fait référence "];
 	i = r.indexOf("<p");
 	while(true){
 		if(i==-1){break;}
@@ -114,12 +115,20 @@ function GetDescriptionFromContent(r){
 	
 	for (let i = 0; i < startIndexes.length; i++) {
 		paragraphs.push(r.substring(startIndexes[i],endIndexes[i]));
-		
-		//remove paragraphs that don't have main verb
-		if((paragraphs.at(-1).indexOf(" est ") == -1 && paragraphs.at(-1).indexOf(" était ") == -1 && paragraphs.at(-1).indexOf(" sont ") == -1 && paragraphs.at(-1).indexOf(" étaient ")) == -1){
-			paragraphs.pop();
-			continue;
-		}
+
+        //remove paragraphs that don't have main verb
+        let hasStartString = false;
+        for(let startString of startStrings){
+            if(paragraphs.at(-1).indexOf(startString) != -1){
+                hasStartString = true;
+                break;
+            }
+        }
+        if(!hasStartString){
+            paragraphs.pop()
+            continue;
+        }
+
 		//remove paragraphs that don't start with <p> closed tag
 		if(paragraphs.at(-1).indexOf("<p>") == -1){
 			paragraphs.pop();
@@ -169,8 +178,8 @@ function GetDescriptionFromContent(r){
 	
 	//crop from verb to ponctuation
 	start = p.length-1;
-	for (let startVerb of [" est ", " était "," sont "," étaient "]) {
-		i = p.indexOf(startVerb);
+	for (let startString of startStrings) {
+		i = p.indexOf(startString);
 		if(i == -1){continue;}
 		if(i < start){start = i;}
 	}
