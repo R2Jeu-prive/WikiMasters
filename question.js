@@ -39,7 +39,15 @@ function FillPageBuffer(){
 				continue;
 			}
             //filter out pages
-            if(randomPage.title.indexOf("ISO ") != -1){
+            let outStrings = ["ISO ", "Discographie ", "Bibliographie "];
+            let scrap = false;
+            for(let outString of outStrings){
+                if(randomPage.title.indexOf(outString) != -1){
+                    scrap = true;
+                    break;
+                }
+            }
+            if(scrap){
                 continue;
             }
 			pages.push(randomPage);
