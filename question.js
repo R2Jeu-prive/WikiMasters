@@ -71,12 +71,16 @@ function FillQuestionBuffer(){
 			str = str.substring(5, str.length - 1);
 			json = JSON.parse(str);
 			title = json.parse.title;
-            console.log(title);
 			text = json.parse.text;
 			text = text.replace('\"','"');
 			description = GetDescriptionFromContent(text, title);
-            if(!description){return;}
-            if(DescriptionHasTitleElements(title, description)){return;}
+            if(!description){
+				return;
+			}
+            if(DescriptionHasTitleElements(title, description)){
+				console.log("DUP " + title);
+				return;
+			}
             console.log("NEW QUESTION {" + pageId + "}: " + title + " " + description);
             questions.push(new Question(pageId,title,description));
             console.log("BUFFERS : " + pages.length + "p " + questions.length + "q");
@@ -99,12 +103,15 @@ function GetDescriptionFromContent(r, title){
     //remove most people, small cities, vote pages
     let s = r.toLowerCase();
     if(s.indexOf("commune française") != -1){
+		console.log("COMMUNE " + title);
         return false;
     }
     if(s.indexOf("animalia") != -1 && s.indexOf("classification") != -1){
+		console.log("ANIMALE " + title);
         return false;
     }
     if(s.indexOf("plantae") != -1 && s.indexOf("classification") != -1){
+		console.log("PLANTE " + title);
         return false;
     }
 
@@ -129,8 +136,9 @@ function GetDescriptionFromContent(r, title){
 	for (let i = 0; i < startIndexes.length; i++) {
 		paragraphs.push(r.substring(startIndexes[i],endIndexes[i]));
 
-        if(paragraphs.at(-1).indexOf(title) != -1){
+        if(paragraphs.at(-1).indexOf(title) != -1 && paragraphs.at(-1).indexOf(title.toLowerCase())){
             if(paragraphs.at(-1).indexOf(title.toLowerCase()) == -1 && paragraphs.at(-1).indexOf(" un peuple ") == -1){
+				console.log("PROPRE " + title);
                 return false;
             }
         }else{
@@ -169,6 +177,7 @@ function GetDescriptionFromContent(r, title){
 	}
 	//return this article as non valid if no paragraph fit the needs
 	if(paragraphs.length == 0){
+		console.log("INVALID " + title);
 		return false;
 	}
 	
