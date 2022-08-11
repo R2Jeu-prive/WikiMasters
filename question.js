@@ -136,7 +136,7 @@ function GetDescriptionFromContent(r, title){
 	for (let i = 0; i < startIndexes.length; i++) {
 		paragraphs.push(r.substring(startIndexes[i],endIndexes[i]));
 
-        if(paragraphs.at(-1).indexOf(title) != -1 && paragraphs.at(-1).indexOf(title.toLowerCase())){
+        if(paragraphs.at(-1).indexOf(title) != -1 && paragraphs.at(-1).indexOf(title.toLowerCase()) != -1){
             if(paragraphs.at(-1).indexOf(title.toLowerCase()) == -1 && paragraphs.at(-1).indexOf(" un peuple ") == -1){
 				console.log("PROPRE " + title);
                 return false;
