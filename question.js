@@ -31,7 +31,7 @@ function FillPageBuffer(){
 		for (var i in randomPages) {
 			let randomPage = randomPages[i];
 			//remove pages with title of 4 words or more
-			if(randomPage.title.split(" ").length > 3){
+			if(randomPage.title.split(" ").length > 1){
 				continue;
 			}
             //filter out too small pages, and very long pages
