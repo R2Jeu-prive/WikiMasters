@@ -38,6 +38,10 @@ function FillPageBuffer(){
 			if(randomPage.length < 20000 || randomPage.length > 90000){
 				continue;
 			}
+            //filter out pages
+            if(randomPage.title.indexOf("ISO ") != -1){
+                continue;
+            }
 			pages.push(randomPage);
 		}
 		console.log("BUFFERS : " + pages.length + "p " + questions.length + "q");
@@ -95,12 +99,15 @@ function DescriptionHasTitleElements(title, description){
 }
 
 function GetDescriptionFromContent(r){
-    //remove most people and city pages
+    //remove most people, small cities, vote pages
     let s = r.toLowerCase();
-    if(s.indexOf("biographie") != -1 && s.indexOf("né") != -1 && s.indexOf("nationalité") != -1){
+    if(s.indexOf("né") != -1 && s.indexOf("nationalité") != -1){
         return false;
     }
     if(s.indexOf("commune") != -1 && s.indexOf("code postal") != -1 && s.indexOf("superficie") != -1 && s.indexOf("capitale") == -1){
+        return false;
+    }
+    if(s.indexOf("cette page recense les résultats") != -1){
         return false;
     }
 
