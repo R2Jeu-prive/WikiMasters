@@ -227,4 +227,4 @@ class Question{
 	}
 }
 
-module.exports = {Init, Fetch, FetchTitle};
+module.exports = {Init, Fetch};
