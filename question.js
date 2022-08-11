@@ -97,10 +97,10 @@ function DescriptionHasTitleElements(title, description){
 function GetDescriptionFromContent(r){
     //remove most people, small cities, vote pages
     let s = r.toLowerCase();
-    if(s.indexOf("commune française")){
+    if(s.indexOf("commune française") != -1){
         return false;
     }
-    if(s.indexOf("animalia") != -1 && s.indexOf("classification")){
+    if(s.indexOf("animalia") != -1 && s.indexOf("classification") != -1){
         return false;
     }
 
