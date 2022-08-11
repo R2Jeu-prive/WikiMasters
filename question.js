@@ -95,6 +95,15 @@ function DescriptionHasTitleElements(title, description){
 }
 
 function GetDescriptionFromContent(r){
+    //remove most people and city pages
+    let s = r.toLowerCase();
+    if(s.indexOf("biographie") != -1 && s.indexOf("né") != -1 && s.indexOf("nationalité") != -1){
+        return false;
+    }
+    if(s.indexOf("commune") != -1 && s.indexOf("code postal") != -1 && s.indexOf("superficie") != -1 && s.indexOf("capitale") == -1){
+        return false;
+    }
+
 	//get paragraphs
 	startIndexes = [];
 	endIndexes = [];
@@ -208,13 +217,6 @@ function Fetch(){
 		return new Question(-1, "WikiMasters", "est cassé");
 	}
 	return questions.shift();
-}
-
-function FetchTitle(){
-	if(pages.length == 0){
-		return "Wikipédia est cassé";
-	}
-	return pages.shift().title;
 }
 
 class Question{
