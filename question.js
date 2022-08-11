@@ -71,6 +71,7 @@ function FillQuestionBuffer(){
 			str = str.substring(5, str.length - 1);
 			json = JSON.parse(str);
 			title = json.parse.title;
+            console.log(title);
 			text = json.parse.text;
 			text = text.replace('\"','"');
 			description = GetDescriptionFromContent(text, title);
@@ -128,7 +129,7 @@ function GetDescriptionFromContent(r, title){
 	for (let i = 0; i < startIndexes.length; i++) {
 		paragraphs.push(r.substring(startIndexes[i],endIndexes[i]));
 
-        if(!paragraphs.at(-1).indexOf(title.toLowerCase())){
+        if(paragraphs.at(-1).indexOf(title.toLowerCase()) == -1){
             paragraphs.pop()
             continue;
         }
