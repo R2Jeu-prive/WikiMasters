@@ -31,7 +31,7 @@ $(document).ready(function() {
 				}
 				total += playerScore;
 			}
-			shownPlayers.push([-1, playerScores[0], total, playerScores[-1] != 10000]);
+			shownPlayers.push([-1, playerScores[0], total, playerScores[playerScores.length - 1] != 10000]);
 		}
 		while(true){
 			let sorted = true;
