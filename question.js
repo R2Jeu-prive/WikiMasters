@@ -129,10 +129,15 @@ function GetDescriptionFromContent(r, title){
 	for (let i = 0; i < startIndexes.length; i++) {
 		paragraphs.push(r.substring(startIndexes[i],endIndexes[i]));
 
-        if(paragraphs.at(-1).indexOf(title.toLowerCase()) == -1 && paragraphs.at(-1).indexOf(" un peuple ") == -1){
-            paragraphs.pop()
+        if(paragraphs.at(-1).indexOf(title) != -1){
+            if(paragraphs.at(-1).indexOf(title.toLowerCase()) == -1 && paragraphs.at(-1).indexOf(" un peuple ") == -1){
+                return false;
+            }
+        }else{
+            paragraphs.pop();
             continue;
         }
+        
         //remove paragraphs that don't have main verb
         let hasStartString = false;
         for(let startString of startStrings){
