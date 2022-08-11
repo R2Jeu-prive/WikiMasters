@@ -73,7 +73,7 @@ function FillQuestionBuffer(){
 			title = json.parse.title;
 			text = json.parse.text;
 			text = text.replace('\"','"');
-			description = GetDescriptionFromContent(text);
+			description = GetDescriptionFromContent(text, title);
             if(!description){return;}
             if(DescriptionHasTitleElements(title, description)){return;}
             console.log("NEW QUESTION {" + pageId + "}: " + title + " " + description);
@@ -94,13 +94,16 @@ function DescriptionHasTitleElements(title, description){
 	return false;
 }
 
-function GetDescriptionFromContent(r){
+function GetDescriptionFromContent(r, title){
     //remove most people, small cities, vote pages
     let s = r.toLowerCase();
     if(s.indexOf("commune française") != -1){
         return false;
     }
     if(s.indexOf("animalia") != -1 && s.indexOf("classification") != -1){
+        return false;
+    }
+    if(s.indexOf("plantae") != -1 && s.indexOf("classification") != -1){
         return false;
     }
 
@@ -125,6 +128,10 @@ function GetDescriptionFromContent(r){
 	for (let i = 0; i < startIndexes.length; i++) {
 		paragraphs.push(r.substring(startIndexes[i],endIndexes[i]));
 
+        if(!paragraphs.at(-1).indexOf(title.toLowerCase())){
+            paragraphs.pop()
+            continue;
+        }
         //remove paragraphs that don't have main verb
         let hasStartString = false;
         for(let startString of startStrings){
