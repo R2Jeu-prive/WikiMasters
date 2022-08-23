@@ -8,8 +8,9 @@ class Game{
 		this.answers = [];
 		this.scores = [];
 		this.timerRunning = false;
+        this.questionTimeoutId;
 		this.questionsAsked = 0;
-        this.questionsTotal = 2;
+        this.questionsTotal = 10;
 		this.question = null;
         this.decoys = [];
 		this.questionTime = null;
@@ -66,7 +67,7 @@ class Game{
             });
 		}
 
-		setTimeout(this.CorrectAnswers.bind(this), 10000);
+		this.questionTimeoutId = setTimeout(this.CorrectAnswers.bind(this), 10000);
 	}
 
 	CorrectAnswers(){
@@ -185,6 +186,7 @@ function ProcessAnswerRequest(socket, answer){
 			if(gamePlayer.socket.id == socket.id){
 				game.answers[j] = answer
 				game.scores[j][game.questionsAsked-1] = Date.now()-game.questionTime;
+                console.log(game.answers);
                 socket.emit("wait", game.scores[j][game.questionsAsked-1]);
 				return;
 			}
