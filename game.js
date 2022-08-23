@@ -186,9 +186,14 @@ function ProcessAnswerRequest(socket, answer){
 			if(gamePlayer.socket.id == socket.id){
 				game.answers[j] = answer
 				game.scores[j][game.questionsAsked-1] = Date.now()-game.questionTime;
-                console.log(game.answers);
-                socket.emit("wait", game.scores[j][game.questionsAsked-1]);
-				return;
+                for (let [k,gameAnswer] of game.answers.entries()) {
+                    if(gameAnswer == ""){
+                        socket.emit("wait", game.scores[j][game.questionsAsked-1]);
+				        return;
+                    }
+                }
+                clearTimeout(game.questionTimeoutId);
+                game.CorrectAnswers();
 			}
 		}
 	}
