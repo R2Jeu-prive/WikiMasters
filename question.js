@@ -9,7 +9,7 @@ function Init(){
 		let data = JSON.parse(fs.readFileSync("data/" + i + ".json").toString().slice(1));
 		for (let j = 0; j < data.length; j++) {
 			if(data[j].description.slice(-1) != "."){
-				console.log(i + ") " + data[j].title);
+				continue;
 			}
 			questions[data[j].id] = new Question(data[j].id, data[j].title, data[j].description);
 		}
