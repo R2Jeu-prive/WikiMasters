@@ -1,24 +1,34 @@
 const fetch = require('node-fetch');
 const fs = require("fs");
-let pages;
 let questions;
 
 function Init(){
-	pages = [];
-	questions = [];
-	let rawdata = fs.readFileSync('data/7.json');
-	let text = rawdata.toString()
-	console.log(text)
-	console.log(JSON.parse(text.slice(1)))
-	/*let file = JSON.parse(rawdata);
-	console.log(file);*/
+	questions = {};
+	const fileCount = 7;
+	for (let i = 1; i <= fileCount; i++) {
+		let data = JSON.parse(fs.readFileSync("data/" + i + ".json").toString().slice(1));
+		for (let j = 0; j < data.length; j++) {
+			if(data[j].description.slice(-1) != "."){
+				console.log(i + ") " + data[j].title);
+			}
+			questions[data[j].id] = new Question(data[j].id, data[j].title, data[j].description);
+		}
+		console.log("imported " + data.length + " questions from file " + i + ".json");
+	}
+	console.log("finished import: " + Object.keys(questions).length + " questions")
 }
 
 function Fetch(){
-	if(questions.length == 0){
-		return new Question(-1, "WikiMasters", "est cassé");
+	let keys = Object.keys(questions);
+	if(keys.length == 0){
+		Init();
+		return Fetch();
 	}
-	return questions.shift();
+	let key = keys[Math.floor(Math.random()*keys.length)];
+	let question = questions[key];
+	delete questions[key];
+	console.log(question);
+	return question;
 }
 
 class Question{
