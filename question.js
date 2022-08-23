@@ -27,7 +27,6 @@ function Fetch(){
 	let key = keys[Math.floor(Math.random()*keys.length)];
 	let question = questions[key];
 	delete questions[key];
-	console.log(question);
 	return question;
 }
 
