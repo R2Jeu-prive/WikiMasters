@@ -215,8 +215,9 @@ function ProcessPlayerDisconnection(player){
 			if(game.answers.length > 0){
 				game.answers.splice(j, 1);
 				game.scores.splice(j, 1);
-			}
-			game.RefreshLobby();
+			}else{
+                game.RefreshLobby();
+            }
 		}
 	}
 }
@@ -225,6 +226,14 @@ function ProcessResetRequest(socket){
     for (let game of games) {
 		if(game.players[0].socket.id == socket.id){
             game.RefreshLobby();
+            game.answers = [];
+            game.scores = [];
+            game.timerRunning = false;
+            game.questionTimeoutId;
+            game.questionsAsked = 0;
+            game.question = null;
+            game.decoys = [];
+            game.questionTime = null;
 			return;
 		}
 	}
