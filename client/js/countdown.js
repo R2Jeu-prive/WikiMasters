@@ -3,7 +3,7 @@ $(document).ready(function() {
 		$("#countdown-screen .number").text(number);
         $("#lobby-screen").addClass("hidden-screen");
         $("#loading-screen").addClass("hidden-screen");
-        $("#answer-screen").addClass("hidden-screen");
+        $("#correction-screen").addClass("hidden-screen");
         $("#countdown-screen").removeClass("hidden-screen");
 	})
 });
