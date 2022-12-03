@@ -55,7 +55,6 @@
     position: relative;
     width: 1.5em;
     height: 0.8em;
-    margin-bottom: 10px;
     border-radius: 0.5em;
     background: #e84d4d;
     box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.3);
@@ -87,6 +86,17 @@
 #lobby-screen .toggle input[type="checkbox"]:checked + label:before {
     box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
     left: 0.8em;
+}
+
+#lobby-screen .toggle-option{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#lobby-screen .toggle-label{
+    margin-left: 15px;
 }
 
 #lobby-screen .player{
