@@ -5,6 +5,7 @@ class Game{
 	constructor(hostUser){
 		this.players = [hostUser];
 		this.tag = GenerateTag();
+        this.status = "lobby"; //lobby | countdown | question | correction | end
 		this.answers = [];
 		this.scores = [];
 		this.timerRunning = false;
@@ -39,12 +40,17 @@ class Game{
 	}
 
     Countdown(){
-        for (let [i, player] of this.players.entries()) {
-			player.socket.emit("countdown", 3);
-            setTimeout(function(){player.socket.emit("countdown", 2)}, 500);
-            setTimeout(function(){player.socket.emit("countdown", 1)}, 1000);
-		}
+        this.status = "countdown";
+        this.ShowCount(3);
+        setTimeout(function(){this.ShowCount(2).bind(this)}, 500);
+        setTimeout(function(){this.ShowCount(1).bind(this)}, 1000);
 		setTimeout(this.AskQuestion.bind(this), 1500);
+    }
+
+    ShowCount(num){
+        for (let [i, player] of this.players.entries()) {
+            player.socket.emit("countdown", num);
+        }
     }
 
 	AskQuestion(){
@@ -60,18 +66,18 @@ class Game{
 		this.answers = [];
 		for (let [i, player] of this.players.entries()) {
 			this.answers.push("");
-			this.scores[i].push(10000);
+			this.scores[i].push(-1);
 			player.socket.emit("question", {
                 description : this.question.description,
                 titles : answerPool
             });
 		}
-
+        this.status = "question";
 		this.questionTimeoutId = setTimeout(this.CorrectAnswers.bind(this), 10000);
 	}
 
 	CorrectAnswers(){
-		console.log("A)" + this.scores)
+        this.status = "correction";
 		this.timerRunning = false;
 		let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
 		for (let [i,player] of this.players.entries()) {
@@ -101,6 +107,7 @@ class Game{
 	}
 
     ShowEndScreen(){
+        this.status = "end";
         let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
 		for (let [i,player] of this.players.entries()) {
             //set wrong answers to score 10s
@@ -147,10 +154,13 @@ function JoinGame(user, tag){
 		if(game.tag != tag){
 			continue;
 		}
+        if(game.status != "lobby"){
+            return false;
+        }
 		game.players.push(user);
 		console.log(user.pseudo + " JOINED " + game.tag);
 		game.RefreshLobby();
-		return true
+		return true;
 	}
 	return false;//couldn't find game with this tag
 }
