@@ -6,7 +6,7 @@ $(document).ready(function() {
 			$("#lobby-screen .player-list").append("<li class='player'>" + player + "</li>")
 		}
 		$("#lobby-screen .start-game").attr("hidden",!data.isHost);
-        $("#lobby-screen .host-panel").attr("hidden",!data.isHost);
+        $("#lobby-screen .host-panel").css("display", data.isHost ? "flex" : "none");
         $("#loading-screen").addClass("hidden-screen");
         $("#end-screen").addClass("hidden-screen");
         $("#lobby-screen").removeClass("hidden-screen");
@@ -14,5 +14,9 @@ $(document).ready(function() {
 
 	$("#lobby-screen .start-game").on("click", function(){
 		socket.emit("startGame");
+	})
+
+    $("#lobby-screen .quit-game").on("click", function(){
+		location.reload();
 	})
 });

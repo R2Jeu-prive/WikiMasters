@@ -42,8 +42,8 @@ class Game{
     Countdown(){
         this.status = "countdown";
         this.ShowCount(3);
-        setTimeout(function(){this.ShowCount(2).bind(this)}, 500);
-        setTimeout(function(){this.ShowCount(1).bind(this)}, 1000);
+        setTimeout(this.ShowCount.bind(this,2), 500);
+        setTimeout(this.ShowCount.bind(this,1), 1000);
 		setTimeout(this.AskQuestion.bind(this), 1500);
     }
 
