@@ -30,6 +30,11 @@ routes.push(["/js/waiting","/client/js/waiting.js"])
 routes.push(["/css/waiting","/client/css/waiting.css"])
 routes.push(["/js/end","/client/js/end.js"])
 routes.push(["/css/end","/client/css/end.css"])
+routes.push(["/js/browse","/client/js/browse.js"])
+routes.push(["/css/browse","/client/css/browse.css"])
+routes.push(["/js/pathresult","/client/js/pathresult.js"])
+routes.push(["/css/pathresult","/client/css/pathresult.css"])
+routes.push(["/css/wikipedia","/client/css/wikipedia.css"])
 routes.push(["/css/phone","/client/css/phone.css"])
 for (let route of routes) {
 	router.get(route[0], function(req, res){
@@ -39,8 +44,8 @@ for (let route of routes) {
 	app.use(route[0], router)
 }
 
-let server = app.listen(3000, function(){
-  console.log("Web server is running on port 3000");
+let server = app.listen(80, function(){
+  console.log("Web server is running on port 80");
   console.log("to end press Ctrl + C");
 });
 const io = new Server(server);
@@ -78,6 +83,12 @@ io.on('connection', (socket) => {
 	})
 	socket.on("answer", (answer) => {
 		G.ProcessAnswerRequest(socket, answer);
+	})
+    socket.on("pathreset", () => {
+		G.ProcessPathResetRequest(socket);
+	})
+    socket.on("pathstep", (page) => {
+		G.ProcessPathStepRequest(socket, page);
 	})
     socket.on("reset", () => {
 		G.ProcessResetRequest(socket);

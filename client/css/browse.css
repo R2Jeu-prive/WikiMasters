@@ -1,0 +1,104 @@
+#browse-screen{
+    padding-bottom: 0px;
+    height: calc(100% - 10px);
+    overflow-y: hidden;
+}
+
+#browse-screen .parts{
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+}
+
+#browse-screen .pathfind > p{
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 500;
+    color: #1C4187;
+    font-size: 20px;
+    text-shadow: 1px 1px #00000030;
+    text-align: center;
+}
+
+#browse-screen .time{
+    color: #1C4187;
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 500;
+    font-size: 60px;
+    margin: 0 10px 0 0;
+}
+
+#browse-screen .pathfind{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#browse-screen .info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#browse-screen .actions{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#browse-screen .buttons{
+    display: flex;
+    flex-direction: column;
+}
+
+
+#browse-screen .fa-person-walking-arrow-right{
+    color: #1C4187;
+    font-size: 20px;
+    margin: 15px;
+}
+
+#browse-screen .wikipedia{
+    padding: 1.5em;
+    padding-top: 0px;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    width: calc(100% - 30px);
+    max-width: 1000px;
+    height: auto;
+    overflow-y: auto;
+    overflow-x: auto;
+    background-image: none;
+    margin: 15px;
+    outline: 5px solid #1C4187;
+    border-radius: 2px;
+}
+
+#browse-screen .wikipedia .bigger{
+    display: none;
+}
+
+#browse-screen .wikipedia.loading .bigger{
+    display: block;
+    height: 1000px;
+    width: 1000px;
+}
+
+#browse-screen .wikipedia.loading{
+    overflow: hidden;
+}
+
+#browse-screen .mw-parser-output{
+    font-size: calc(1em * 0.875);
+    line-height: 1.6;
+}
+
+#browse-screen .title{
+    font-size: 2.5em;
+    font-family: 'Linux Libertine','Georgia','Times',serif;
+    line-height: 1.375;
+    font-weight: normal;
+}
+
+#browse-screen .wikipedia.peeking{
+    filter: invert(0.9);
+}

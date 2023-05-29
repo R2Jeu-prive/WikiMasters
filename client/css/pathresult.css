@@ -1,0 +1,41 @@
+#pathresult-screen .my-result{
+    border: none;
+    margin: 50px;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 4px;
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 800;
+    box-shadow: 2px 2px #00000040;
+    text-align: center;
+}
+
+#pathresult-screen .my-result-wrong{
+	background-color: #da5c5c;
+    color: #ffdfdfee;
+}
+
+#pathresult-screen .my-result-right{
+	background-color: #5eda5c;
+    color: #e3fde5ee;
+}
+
+#pathresult-screen .my-result-king{
+	background-color: #ff69eb;
+    color: #ffc7f8;
+}
+
+#pathresult-screen .scoreboard{
+	background-color: #bdd5ffee;
+    border: none;
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 30px;
+    border-radius: 4px;
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 400;
+    color: cornflowerblue;
+    box-shadow: 2px 2px #00000030;
+    list-style: none;
+    text-align: center;
+}

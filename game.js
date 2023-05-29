@@ -8,12 +8,15 @@ class Game{
         this.status = "lobby"; //lobby | countdown | question | correction | end
 		this.answers = [];
 		this.scores = [];
-		this.timerRunning = false;
-        this.questionTimeoutId;
+		this.canAnswerQuestion = false;
+        this.canProgressPath = false;
+        this.timeoutId = -1;
 		this.questionsAsked = 0;
         this.questionsTotal = 10;
 		this.question = null;
         this.decoys = [];
+        this.pathfind = [];
+        this.paths = [];
 		this.questionTime = null;
 	}
 
@@ -44,7 +47,7 @@ class Game{
         this.ShowCount(3);
         setTimeout(this.ShowCount.bind(this,2), 500);
         setTimeout(this.ShowCount.bind(this,1), 1000);
-		setTimeout(this.AskQuestion.bind(this), 1500);
+		setTimeout(this.SendPathfind.bind(this), 1500);
     }
 
     ShowCount(num){
@@ -53,8 +56,25 @@ class Game{
         }
     }
 
+    SendPathfind(){
+        this.canProgressPath = true;
+        this.timeoutId = -1;
+        this.questionsAsked += 1;
+        this.pathfind = [{id:9175315, title:'Courant magellanique'}, {id:64, title:'Astronomie'}];
+        //this.pathfind = [Q.Fetch(), Q.Fetch()];
+        this.paths = [];
+        for (let [i, player] of this.players.entries()) {
+			this.paths.push([[parseInt(this.pathfind[0].id), this.pathfind[0].title]]);
+            this.scores[i].push(20000);
+			player.socket.emit("pathfind", {
+                start : this.pathfind[0],
+                end : this.pathfind[1]
+            });
+		}
+    }
+
 	AskQuestion(){
-		this.timerRunning = true;
+		this.canAnswerQuestion = true;
 		this.questionTime = Date.now();
 		this.questionsAsked += 1;
 		this.question = Q.Fetch();
@@ -73,12 +93,12 @@ class Game{
             });
 		}
         this.status = "question";
-		this.questionTimeoutId = setTimeout(this.CorrectAnswers.bind(this), 10000);
+		this.timeoutId = setTimeout(this.CorrectAnswers.bind(this), 10000);
 	}
 
 	CorrectAnswers(){
         this.status = "correction";
-		this.timerRunning = false;
+		this.canAnswerQuestion = false;
 		let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
 		for (let [i,player] of this.players.entries()) {
             //set wrong answers to score 10s
@@ -104,6 +124,28 @@ class Game{
                 questionProgression : [this.questionsAsked, this.questionsTotal]
             });
 		}
+	}
+
+    CorrectPath(){
+        console.log(this.tag);
+        this.status = "pathresult";
+		this.canProgressPath = false;
+		let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
+		for (let [i,player] of this.players.entries()) {
+			clientScores.push([player.pseudo])
+			for (let score of this.scores[i]) {
+				clientScores[i].push(score);
+			}
+		}
+		for (let [i,player] of this.players.entries()) {
+			player.socket.emit("pathresult", {
+                time : this.scores[i][this.questionsAsked-1],
+                scores : clientScores,
+                isHost : player.pseudo == this.players[0].pseudo,
+                questionProgression : [this.questionsAsked, this.questionsTotal]
+            });
+		}
+        console.log(this.scores);
 	}
 
     ShowEndScreen(){
@@ -189,7 +231,7 @@ function ProcessNextQuestionRequest(socket){
 
 function ProcessAnswerRequest(socket, answer){
 	for (let [i, game] of games.entries()){
-		if(!game.timerRunning){
+		if(!game.canAnswerQuestion){
 			continue;
 		}
 		for (let [j,gamePlayer] of game.players.entries()) {
@@ -202,11 +244,46 @@ function ProcessAnswerRequest(socket, answer){
 				        return;
                     }
                 }
-                clearTimeout(game.questionTimeoutId);
+                clearTimeout(game.timeoutId);
                 game.CorrectAnswers();
 			}
 		}
 	}
+}
+
+function ProcessPathResetRequest(socket){
+    for (let [i, game] of games.entries()){
+		if(game.pathfind.length == 0){
+			continue;
+		}
+        for (let [j,gamePlayer] of game.players.entries()) {
+			if(gamePlayer.socket.id == socket.id){
+                game.paths[j] = [[parseInt(game.pathfind[0].id), game.pathfind[0].title]];
+            }
+        }
+    }
+}
+
+function ProcessPathStepRequest(socket, page){
+    for (let [i, game] of games.entries()){
+		if(game.pathfind.length == 0){
+			continue;
+		}
+        for (let [j,gamePlayer] of game.players.entries()) {
+			if(gamePlayer.socket.id == socket.id){
+                game.paths[j].push([page.id, page.title]);
+                if(page.id == parseInt(game.pathfind[1].id)){
+                    if(game.timeoutId == -1){
+                        game.timeoutId = setTimeout(game.CorrectPath.bind(game), 5000);//180000
+                        game.scores[j][game.questionsAsked-1] = -20000;
+                    }else{
+                        game.scores[j][game.questionsAsked-1] = -10000;
+                    }
+                    socket.emit("waitPath", game.scores[j][game.questionsAsked-1]);
+                }
+            }
+        }
+    }
 }
 
 function ProcessPlayerDisconnection(player){
@@ -238,8 +315,8 @@ function ProcessResetRequest(socket){
             game.RefreshLobby();
             game.answers = [];
             game.scores = [];
-            game.timerRunning = false;
-            game.questionTimeoutId;
+            game.canAnswerQuestion = false;
+            game.timeoutId = -1;
             game.questionsAsked = 0;
             game.question = null;
             game.decoys = [];
@@ -263,4 +340,4 @@ function GenerateTag(){
 	return tag;
 }
 
-module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest, ProcessResetRequest};
+module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest, ProcessResetRequest, ProcessPathResetRequest, ProcessPathStepRequest};

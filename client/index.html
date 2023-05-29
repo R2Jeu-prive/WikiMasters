@@ -12,6 +12,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/30e8b0172a.js" crossorigin="anonymous"></script>
 	<script src="/js"></script>
 	<link rel="stylesheet" href="css">
 </head>
@@ -110,6 +111,41 @@
         <div class="end-of-page"></div>
 		<link rel="stylesheet" href="css/correction">
 		<script src="/js/correction"></script>
+	</div>
+    <div class="screen hidden-screen" id="browse-screen">
+        <div class="start-of-page"></div>
+        <div class="parts">
+            <div class="info">
+                <div class="pathfind">
+                    <p class="start">Londres</p>
+                    <i class="fa-solid fa-person-walking-arrow-right"></i>
+                    <p class="end">Paris</p>
+                </div>
+                <div class="actions">
+                    <p class="time">3:00</p>
+                    <div class="buttons">
+                        <button class="reset blue-button">Redémarrer</button>
+                        <button class="peek blue-button">Voir l'arrivée</button>
+                    </div>
+                </div>
+            </div>
+            <div class="wikipedia">
+                <div class="bigger"></div>
+            </div>
+        </div>
+        <div class="end-of-page"></div>
+        <link rel="stylesheet" href="css/wikipedia" class="wikipedia-css" disabled>
+        <link rel="stylesheet" href="css/browse">
+        <script src="/js/browse"></script>
+    </div>
+    <div class="screen hidden-screen" id="pathresult-screen">
+        <div class="start-of-page"></div>
+		<p class="my-result"></p>
+		<ul class="scoreboard"></ul>
+		<button class="next-question blue-button">Question Suivante</button>
+        <div class="end-of-page"></div>
+		<link rel="stylesheet" href="css/pathresult">
+		<script src="/js/pathresult"></script>
 	</div>
     <div class="screen hidden-screen" id="end-screen">
         <div class="start-of-page"></div>
