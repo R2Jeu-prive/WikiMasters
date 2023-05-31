@@ -29,7 +29,7 @@ $(document).ready(function() {
 				socket.emit("joinGame", joinTag, (joined) => {
 					if(!joined){
                         $("#loading-screen").addClass("hidden-screen");
-                        $("#error-screen .message").text("Ce TAG ne correspond à aucun lobby");
+                        $("#error-screen .message").text("Le lobby avec ce TAG est fermé ou n'existe pas");
                         $("#error-screen").removeClass("hidden-screen");
                     }
 				})

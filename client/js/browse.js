@@ -29,6 +29,10 @@ $(document).ready(function() {
         $("#browse-screen .time").text("3:00");
     })
 
+    socket.on("pathTime", (data) => {
+        SetPathTime(data.time, data.running);
+    })
+
     $("#browse-screen .reset").on("click", function(){
         $(".wikipedia").addClass("loading");
         Browse("https://fr.wikipedia.org/w/api.php?origin=*&action=parse&format=json&prop=text|title&formatversion=latest&pageid=" + pathfind.start.id);
@@ -47,6 +51,19 @@ $(document).ready(function() {
         socket.emit("pathreset");
     });
 });
+
+let pathTimeoutId = -1;
+function SetPathTime(time, running){
+    $("#browse-screen .time").text(parseTime(time, true));
+    if(running && time != 0){
+        pathTimeoutId = setTimeout(SetPathTime.bind(null, time-1000, true), 1000);
+        $("#browse-screen .time").addClass("running");
+    }
+    if(pathTimeoutId != -1 && !running){
+        clearTimeout(pathTimeoutId);
+        $("#browse-screen .time").removeClass("running");
+    }
+}
 
 
 function Browse(url, sendServer){

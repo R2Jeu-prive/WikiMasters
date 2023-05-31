@@ -5,7 +5,7 @@ class Game{
 	constructor(hostUser){
 		this.players = [hostUser];
 		this.tag = GenerateTag();
-        this.status = "lobby"; //lobby | countdown | question | correction | end
+        this.status = "lobby"; //lobby | countdown | question | correction | pathfind | pathresult | end
 		this.answers = [];
 		this.scores = [];
 		this.canAnswerQuestion = false;
@@ -15,8 +15,9 @@ class Game{
         this.questionsTotal = 10;
 		this.question = null;
         this.decoys = [];
-        this.pathfind = [];
-        this.paths = [];
+        this.pathfind = []; //start and end of pathfind
+        this.paths = []; //page ids taken by players 
+        this.pathTime = 5000; //time given after first answer
 		this.questionTime = null;
 	}
 
@@ -71,6 +72,8 @@ class Game{
                 end : this.pathfind[1]
             });
 		}
+        this.status = "pathfind";
+        this.SendPathTime(false);
     }
 
 	AskQuestion(){
@@ -93,10 +96,10 @@ class Game{
             });
 		}
         this.status = "question";
-		this.timeoutId = setTimeout(this.CorrectAnswers.bind(this), 10000);
+		this.timeoutId = setTimeout(this.RefreshCorrection.bind(this), 10000);
 	}
 
-	CorrectAnswers(){
+	RefreshCorrection(){
         this.status = "correction";
 		this.canAnswerQuestion = false;
 		let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
@@ -112,13 +115,12 @@ class Game{
 				clientScores[i].push(score);
 			}
 		}
-        this.decoys.unshift(this.question);
 		for (let [i,player] of this.players.entries()) {
 			player.socket.emit("correction", {
                 answer : this.answers[i],
                 time : this.scores[i][this.questionsAsked-1],
                 correction : this.question.title + " " + this.question.description,
-                pages : this.decoys,
+                pages : [this.question].concat(this.decoys),
                 scores : clientScores,
                 isHost : player.pseudo == this.players[0].pseudo,
                 questionProgression : [this.questionsAsked, this.questionsTotal]
@@ -126,8 +128,16 @@ class Game{
 		}
 	}
 
-    CorrectPath(){
-        console.log(this.tag);
+    SendPathTime(_running){
+        for (let [i,player] of this.players.entries()) {
+			player.socket.emit("pathTime", {
+                time : this.pathTime,
+                running : _running
+            });
+		}
+    }
+
+    RefreshPathResult(){
         this.status = "pathresult";
 		this.canProgressPath = false;
 		let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
@@ -145,10 +155,9 @@ class Game{
                 questionProgression : [this.questionsAsked, this.questionsTotal]
             });
 		}
-        console.log(this.scores);
 	}
 
-    ShowEndScreen(){
+    RefreshEndScreen(){
         this.status = "end";
         let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
 		for (let [i,player] of this.players.entries()) {
@@ -222,7 +231,7 @@ function ProcessNextQuestionRequest(socket){
             if(game.questionsTotal != game.questionsAsked){
                 game.Countdown();   
             }else{
-                game.ShowEndScreen();
+                game.RefreshEndScreen();
             }
 			return;
 		}
@@ -245,7 +254,7 @@ function ProcessAnswerRequest(socket, answer){
                     }
                 }
                 clearTimeout(game.timeoutId);
-                game.CorrectAnswers();
+                game.RefreshCorrection();
 			}
 		}
 	}
@@ -274,7 +283,8 @@ function ProcessPathStepRequest(socket, page){
                 game.paths[j].push([page.id, page.title]);
                 if(page.id == parseInt(game.pathfind[1].id)){
                     if(game.timeoutId == -1){
-                        game.timeoutId = setTimeout(game.CorrectPath.bind(game), 5000);//180000
+                        game.timeoutId = setTimeout(game.RefreshPathResult.bind(game), game.pathTime);
+                        game.SendPathTime(true);
                         game.scores[j][game.questionsAsked-1] = -20000;
                     }else{
                         game.scores[j][game.questionsAsked-1] = -10000;
@@ -299,11 +309,20 @@ function ProcessPlayerDisconnection(player){
 			}
 			console.log(player.pseudo + " LEFT " + games[i].tag);
 			game.players.splice(j, 1);
-			if(game.answers.length > 0){
+			if(game.status == "lobby"){
+                game.RefreshLobby();
+            }else if(game.status == "question"){
 				game.answers.splice(j, 1);
 				game.scores.splice(j, 1);
-			}else{
-                game.RefreshLobby();
+			}else if(game.status == "pathfind"){
+                game.paths.splice(j, 1);
+				game.scores.splice(j, 1);
+            }else if(game.status == "end"){
+                game.RefreshEndScreen()
+            }else if(game.status == "pathresult"){
+                game.RefreshPathResult()
+            }else if(game.status == "correction"){
+                game.RefreshCorrection()
             }
 		}
 	}

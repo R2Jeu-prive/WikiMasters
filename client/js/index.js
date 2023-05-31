@@ -9,7 +9,7 @@ $(document).ready(function() {
 	})
 });
 
-function parseTime(timeInMil){
+function parseTime(timeInMil, noMil = false){
     let time = "";
     if(timeInMil < 0){
         timeInMil = -timeInMil;
@@ -18,6 +18,6 @@ function parseTime(timeInMil){
     let min = Math.floor(timeInMil/60000);
     let sec = ("0" + (Math.floor((timeInMil%60000)/1000))).slice(-2);
     let mil = ("00" + (timeInMil%1000)).slice(-3);
-    time = time + min + ":" + sec + "." + mil;
+    time = noMil ? time + min + ":" + sec : time + min + ":" + sec + "." + mil;
     return time;
 }

@@ -19,12 +19,17 @@
     text-align: center;
 }
 
+#browse-screen .time.running{
+    opacity: 100%;
+}
+
 #browse-screen .time{
     color: #1C4187;
     font-family: 'Kantumruy Pro', sans-serif;
     font-weight: 500;
     font-size: 60px;
     margin: 0 10px 0 0;
+    opacity: 50%;
 }
 
 #browse-screen .pathfind{
