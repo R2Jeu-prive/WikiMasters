@@ -52,15 +52,23 @@
 	<div class="screen hidden-screen" id="lobby-screen">
         <div class="start-of-page"></div>
 		<h1 class="title">Lobby TAG</h1>
-        <div class="panels"></div>
+        <div class="info-panel">
+            <div class="toggle-open">
+                <div class="toggle"><input type="checkbox" id="open" name="check"><label class="toggle-visual" for="open"></label></div>
+                <label class="toggle-label">Lobby Ouvert</label>
+            </div>
+            <div class="list-option">
+                <select name="mode" class="mode-select">
+                    <option value="short">Mode Express</option>
+                    <option value="long">Mode Long</option>
+                    <option value="title">Entrainement (Titre)</option>
+                    <option value="pathfind">Entrainement (Navigation)</option>
+                </select>
+            </div>
+            <p class="mode-info"></p>
+        </div>
 		<ul class="player-list"></ul>
         <button class="quit-game blue-button">Quitter</button>
-        <div class="host-panel">
-            <div class="toggle-option">
-                <div class="toggle"><input type="checkbox" id="spec" name="check"><label for="spec"></label></div>
-                <label class="toggle-label" for="spec">Spectateur</label>
-            </div>
-        </div>
         <button class="start-game blue-button">Démarrer</button>
         <div class="end-of-page"></div>
 		<link rel="stylesheet" href="css/lobby">
