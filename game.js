@@ -13,13 +13,24 @@ class Game{
         this.timeoutId = -1;
 		this.questionsAsked = 0;
         this.questionsTotal = 10;
+        this.pathfindQuestionIds = [];//between 1 and questionsTotal
 		this.question = null;
         this.decoys = [];
         this.pathfind = []; //start and end of pathfind
         this.paths = []; //page ids taken by players 
-        this.pathTime = 5000; //time given after first answer
+        this.pathTime = 180000; //time given after first answer
 		this.questionTime = null;
+        this.lobbyIsOpen = true;
+        this.mode = "short";
 	}
+
+    SetOptions(options){
+        if(this.status != "lobby"){return;}
+        this.lobbyIsOpen = options.open;
+        this.mode = options.mode;
+        console.log(options);
+        this.RefreshLobby();
+    }
 
     //sends all players lobby info needed
 	RefreshLobby(){
@@ -28,7 +39,7 @@ class Game{
 			playerList.push(player.pseudo);
 		}
 		for (let player of this.players) {
-			player.socket.emit("refreshLobby", {playerList : playerList, isHost : player.pseudo == this.players[0].pseudo, tag : this.tag});
+			player.socket.emit("refreshLobby", {playerList : playerList, isHost : player.pseudo == this.players[0].pseudo, tag : this.tag, mode : this.mode, lobbyIsOpen : this.lobbyIsOpen});
 		}
 	}
 
@@ -37,6 +48,26 @@ class Game{
 		this.questionsAsked = 0;
         this.answers = [];
 		this.scores = [];
+
+        if(this.mode == "short"){
+            this.questionsTotal = 11;
+            this.pathfindQuestionIds = [11];
+        }else if(this.mode == "long"){
+            this.questionsTotal = 23;
+            this.pathfindQuestionIds = [11,22,23];
+        }else if(this.mode == "title"){
+            this.questionsTotal = 5;
+            this.pathfindQuestionIds = [];
+        }else if(this.mode == "pathfind"){
+            this.questionsTotal = 1;
+            this.pathfindQuestionIds = [1];
+        }
+
+        if(this.players.length == 1){
+            this.pathTime = 0; //nobody to wait !
+        }else{
+            this.pathTime = 180000; //3 min
+        }
 		for (let player of this.players) {
 			this.scores.push([]);
 		}
@@ -44,11 +75,16 @@ class Game{
 	}
 
     Countdown(){
+        let isPathFind = this.pathfindQuestionIds.includes(this.questionsAsked + 1)
         this.status = "countdown";
         this.ShowCount(3);
         setTimeout(this.ShowCount.bind(this,2), 500);
         setTimeout(this.ShowCount.bind(this,1), 1000);
-		setTimeout(this.SendPathfind.bind(this), 1500);
+        if(isPathFind){
+            setTimeout(this.SendPathfind.bind(this), 1500);
+        }else{
+            setTimeout(this.AskQuestion.bind(this), 1500);
+        }
     }
 
     ShowCount(num){
@@ -61,8 +97,8 @@ class Game{
         this.canProgressPath = true;
         this.timeoutId = -1;
         this.questionsAsked += 1;
-        this.pathfind = [{id:9175315, title:'Courant magellanique'}, {id:64, title:'Astronomie'}];
-        //this.pathfind = [Q.Fetch(), Q.Fetch()];
+        //this.pathfind = [{id:9175315, title:'Courant magellanique'}, {id:64, title:'Astronomie'}];
+        this.pathfind = [Q.Fetch(), Q.Fetch()];
         this.paths = [];
         for (let [i, player] of this.players.entries()) {
 			this.paths.push([[parseInt(this.pathfind[0].id), this.pathfind[0].title]]);
@@ -161,11 +197,6 @@ class Game{
         this.status = "end";
         let clientScores = [] //[["playerA", 10000, 5678, 3200], ["playerB", 10000, 9994, 1002]]
 		for (let [i,player] of this.players.entries()) {
-            //set wrong answers to score 10s
-			if(this.answers[i] != this.question.title){
-				this.scores[i][this.questionsAsked-1] = 10000;
-			}
-
             //fill in clientScores to send to front
 			clientScores.push([player.pseudo])
 			for (let score of this.scores[i]) {
@@ -205,8 +236,8 @@ function JoinGame(user, tag){
 		if(game.tag != tag){
 			continue;
 		}
-        if(game.status != "lobby"){
-            return false;
+        if(game.status != "lobby" || game.lobbyIsOpen == false){
+            return false;//game is closed or running;
         }
 		game.players.push(user);
 		console.log(user.pseudo + " JOINED " + game.tag);
@@ -214,6 +245,16 @@ function JoinGame(user, tag){
 		return true;
 	}
 	return false;//couldn't find game with this tag
+}
+
+function ProcessChangeGameOptionsRequest(socket, options){
+    for (let game of games) {
+		if(game.players[0].socket.id == socket.id){
+            console.log("valid");
+			game.SetOptions(options);
+			break;
+		}
+	}
 }
 
 function ProcessStartGameRequest(socket){
@@ -229,7 +270,7 @@ function ProcessNextQuestionRequest(socket){
 	for (let game of games) {
 		if(game.players[0].socket.id == socket.id){
             if(game.questionsTotal != game.questionsAsked){
-                game.Countdown();   
+                game.Countdown();
             }else{
                 game.RefreshEndScreen();
             }
@@ -359,4 +400,4 @@ function GenerateTag(){
 	return tag;
 }
 
-module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest, ProcessResetRequest, ProcessPathResetRequest, ProcessPathStepRequest};
+module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest, ProcessResetRequest, ProcessPathResetRequest, ProcessPathStepRequest, ProcessChangeGameOptionsRequest};

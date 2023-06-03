@@ -75,6 +75,10 @@ io.on('connection', (socket) => {
 		}
 		callback(G.JoinGame(U.GetUser(socket), tag))
 	})
+    socket.on("changeGameOptions", (options) => {
+		G.ProcessChangeGameOptionsRequest(socket, options);
+        console.log("rec");
+	})
 	socket.on("startGame", () => {
 		G.ProcessStartGameRequest(socket);
 	})

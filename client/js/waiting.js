@@ -10,7 +10,7 @@ $(document).ready(function() {
         }else{
             $("#waiting-screen .time").text("Tu a trouvé un chemin jusqu'à l'arrivée ! (-10s)");
         }
-        $("#browse-screen .wikipedia-css").prop( "disabled", false );
+        $("#browse-screen .wikipedia-css").prop( "disabled", true );
         $("#browse-screen").addClass("hidden-screen");
         $("#waiting-screen").removeClass("hidden-screen");
 	})

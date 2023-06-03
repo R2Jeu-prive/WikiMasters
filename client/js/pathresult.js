@@ -1,5 +1,7 @@
 $(document).ready(function() {
 	socket.on("pathresult", (data) => {
+        $("#browse-screen .wikipedia-css").prop( "disabled", true );
+        
         //Show correct result for the player
         if(data.time == 20000){
             $("#pathresult-screen .my-result").text("Temps écoulé (+20s)")

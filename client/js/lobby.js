@@ -9,6 +9,7 @@ $(document).ready(function() {
 		$("#lobby-screen .start-game").attr("hidden",!data.isHost);
         $("#lobby-screen .toggle-open .toggle").attr("hidden", !data.isHost);
         $("#lobby-screen .mode-select").attr("disabled", !data.isHost);
+        if(!data.isHost){UpdateLobbyInfo(data.mode , data.lobbyIsOpen)};
         $("#loading-screen").addClass("hidden-screen");
         $("#end-screen").addClass("hidden-screen");
         $("#lobby-screen").removeClass("hidden-screen");
@@ -22,12 +23,11 @@ $(document).ready(function() {
 		location.reload();
 	})
 
-    $("#lobby-screen .mode-select").on("change", function(){
-        UpdateLobbyInfo($("#lobby-screen .mode-select").val(), $("#lobby-screen .toggle-open input").prop("checked"));
-    })
-
-    $("#lobby-screen .toggle-open input").on("change", function(){
-        UpdateLobbyInfo($("#lobby-screen .mode-select").val(), $("#lobby-screen .toggle-open input").prop("checked"));
+    $("#lobby-screen .mode-select,#lobby-screen .toggle-open input").on("change", function(){
+        let mode = $("#lobby-screen .mode-select").val()
+        let open = $("#lobby-screen .toggle-open input").prop("checked")
+        UpdateLobbyInfo(mode , open);
+        socket.emit("changeGameOptions", {mode : mode, open : open});
     })
 });
 
@@ -44,4 +44,6 @@ function UpdateLobbyInfo(mode, open){
     }
     $("#lobby-screen .mode-info").text(info);
     $("#lobby-screen .toggle-open input").prop("checked",open);
+    $("#lobby-screen .toggle-label").text(open ? "Lobby Ouvert" : "Lobby Fermé");
+    $("#lobby-screen .mode-select").val(mode);
 }

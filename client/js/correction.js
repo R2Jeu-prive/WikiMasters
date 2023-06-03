@@ -60,7 +60,7 @@ $(document).ready(function() {
             if(shownPlayer[3] == 10000){
                 $("#correction-screen .scoreboard").append("<li class='player'>" + shownPlayer[0] + ") " + shownPlayer[1] + " " + parseTime(shownPlayer[2]) + " <i class='fa-solid fa-xmark'></i>")
             }else{
-                $("#correction-screen .scoreboard").append("<li class='player'>" + shownPlayer[0] + ") " + shownPlayer[1] + " " + parseTime(shownPlayer[2]) + " <i class='fa-solid fa-check'>(" + parseTime(shownPlayer[3]) +  ")</i>")
+                $("#correction-screen .scoreboard").append("<li class='player'>" + shownPlayer[0] + ") " + shownPlayer[1] + " " + parseTime(shownPlayer[2]) + " <i class='fa-solid fa-check'></i><p class='small-time'>(" + parseTime(shownPlayer[3]) +  ")</p>")
             }
 			
 		}
