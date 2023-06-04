@@ -51,6 +51,7 @@ $(document).ready(function() {
         }
 
         $("#correction-screen").addClass("hidden-screen");
+        $("#pathresult-screen").addClass("hidden-screen");
         $("#loading-screen").addClass("hidden-screen");
         $("#end-screen").removeClass("hidden-screen");
 	})

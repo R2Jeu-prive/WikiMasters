@@ -34,6 +34,7 @@ class Game{
 
     //sends all players lobby info needed
 	RefreshLobby(){
+        this.status = "lobby";
 		let playerList = []
 		for (let player of this.players) {
 			playerList.push(player.pseudo);
@@ -66,7 +67,8 @@ class Game{
         if(this.players.length == 1){
             this.pathTime = 0; //nobody to wait !
         }else{
-            this.pathTime = 180000; //3 min
+            //this.pathTime = 180000; //3 min
+            this.pathTime = 5000; //5 sec
         }
 		for (let player of this.players) {
 			this.scores.push([]);
