@@ -13,7 +13,8 @@ function RemoveUser(disconnectedSocket){
 }
 
 function RenameUser(socket, newPseudo){
-	if(newPseudo == ""){
+    let regex = /^[a-z0-9_]{3,15}$/i;
+	if(!regex.test(newPseudo)){
 		return false;
 	}
 	k = -1;

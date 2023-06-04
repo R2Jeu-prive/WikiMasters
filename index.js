@@ -54,7 +54,11 @@ io.on('connection', (socket) => {
 	U.AddUser(socket);
 	socket.emit("setPseudo", {pseudo : socket.id});
 	console.log('CONNECTED ' + socket.id);
+
 	socket.on("changePseudo", (data, callback) => {
+        if(!("pseudo" in data)){callback(false);return;}
+        if(typeof data.pseudo !== 'string'){callback(false);return;}
+        if(U.GetUser(socket).pseudo != socket.id){callback(false);return;}
 		changed = U.RenameUser(socket, data.pseudo);
 		if(changed){
 			socket.emit("setPseudo", {pseudo : U.GetUser(socket).pseudo});
@@ -69,6 +73,7 @@ io.on('connection', (socket) => {
 		callback(G.CreateGame(U.GetUser(socket)))
 	})
 	socket.on("joinGame", (tag, callback) => {
+        if(typeof tag !== 'string'){callback(false);return;}
 		if(U.GetUser(socket).pseudo == socket.id){
 			callback(false);
 			return;
@@ -76,6 +81,10 @@ io.on('connection', (socket) => {
 		callback(G.JoinGame(U.GetUser(socket), tag))
 	})
     socket.on("changeGameOptions", (options) => {
+        if(!("mode" in options)){return;}
+        if(typeof options.mode !== 'string'){return;}
+        if(!("open" in options)){return;}
+        if(typeof options.open !== 'boolean'){return;}
 		G.ProcessChangeGameOptionsRequest(socket, options);
         console.log("rec");
 	})
@@ -86,12 +95,17 @@ io.on('connection', (socket) => {
 		G.ProcessNextQuestionRequest(socket);
 	})
 	socket.on("answer", (answer) => {
+        if(typeof answer !== 'string'){return;}
 		G.ProcessAnswerRequest(socket, answer);
 	})
     socket.on("pathreset", () => {
 		G.ProcessPathResetRequest(socket);
 	})
     socket.on("pathstep", (page) => {
+        if(!("id" in page)){return;}
+        if(typeof page.id !== 'number'){return;}
+        if(!("title" in title)){return;}
+        if(typeof page.title !== 'string'){return;}
 		G.ProcessPathStepRequest(socket, page);
 	})
     socket.on("reset", () => {
