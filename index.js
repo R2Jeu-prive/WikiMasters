@@ -86,7 +86,6 @@ io.on('connection', (socket) => {
         if(!("open" in options)){return;}
         if(typeof options.open !== 'boolean'){return;}
 		G.ProcessChangeGameOptionsRequest(socket, options);
-        console.log("rec");
 	})
 	socket.on("startGame", () => {
 		G.ProcessStartGameRequest(socket);
@@ -104,7 +103,7 @@ io.on('connection', (socket) => {
     socket.on("pathstep", (page) => {
         if(!("id" in page)){return;}
         if(typeof page.id !== 'number'){return;}
-        if(!("title" in title)){return;}
+        if(!("title" in page)){return;}
         if(typeof page.title !== 'string'){return;}
 		G.ProcessPathStepRequest(socket, page);
 	})

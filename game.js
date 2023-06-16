@@ -28,7 +28,6 @@ class Game{
         if(this.status != "lobby"){return;}
         this.lobbyIsOpen = options.open;
         this.mode = options.mode;
-        console.log(options);
         this.RefreshLobby();
     }
 
@@ -252,7 +251,6 @@ function JoinGame(user, tag){
 function ProcessChangeGameOptionsRequest(socket, options){
     for (let game of games) {
 		if(game.players[0].socket.id == socket.id){
-            console.log("valid");
 			game.SetOptions(options);
 			break;
 		}
