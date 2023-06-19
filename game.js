@@ -350,19 +350,20 @@ function ProcessPlayerDisconnection(player){
 			}
 			console.log(player.pseudo + " LEFT " + games[i].tag);
 			game.players.splice(j, 1);
+            game.scores.splice(j, 1);
 			if(game.status == "lobby"){
                 game.RefreshLobby();
             }else if(game.status == "question"){
 				game.answers.splice(j, 1);
-				game.scores.splice(j, 1);
 			}else if(game.status == "pathfind"){
                 game.paths.splice(j, 1);
-				game.scores.splice(j, 1);
             }else if(game.status == "end"){
                 game.RefreshEndScreen()
             }else if(game.status == "pathresult"){
+                game.paths.splice(j, 1);
                 game.RefreshPathResult()
             }else if(game.status == "correction"){
+                game.answers.splice(j, 1);
                 game.RefreshCorrection()
             }
 		}
