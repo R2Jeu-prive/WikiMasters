@@ -14,6 +14,11 @@ $(document).ready(function() {
     peeking = false;
 	socket.on("pathfind", (data) => {
         pathfind = data;
+
+        peeking = false;
+        $("#browse-screen .wikipedia").removeClass("peeking");
+        $("#browse-screen .peek").removeClass("peeking");
+
         $(".wikipedia").addClass("loading");
         Browse("https://fr.wikipedia.org/w/api.php?origin=*&action=parse&format=json&prop=text|title&formatversion=latest&pageid=" + pathfind.start.id);
         $(".screen").each(function(){
@@ -26,7 +31,7 @@ $(document).ready(function() {
         $("#browse-screen .wikipedia-css").prop( "disabled", false );
 		$("#browse-screen .start").text(pathfind.start.title);
         $("#browse-screen .end").text(pathfind.end.title);
-        $("#browse-screen .time").text("3:00");
+        $("#browse-screen .new-path").attr("hidden", !data.isHost);
     })
 
     socket.on("pathTime", (data) => {
@@ -40,6 +45,10 @@ $(document).ready(function() {
         $("#browse-screen .wikipedia").removeClass("peeking");
         $("#browse-screen .peek").removeClass("peeking");
         socket.emit("pathreset");
+    });
+
+    $("#browse-screen .new-path").on("click", function(){
+        socket.emit("newpath");
     });
 
     $("#browse-screen .peek").on("click", function(){

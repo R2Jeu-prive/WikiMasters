@@ -100,6 +100,9 @@ io.on('connection', (socket) => {
     socket.on("pathreset", () => {
 		G.ProcessPathResetRequest(socket);
 	})
+    socket.on("newpath", () => {
+		G.ProcessNewPathRequest(socket);
+	})
     socket.on("pathstep", (page) => {
         if(!("id" in page)){return;}
         if(typeof page.id !== 'number'){return;}

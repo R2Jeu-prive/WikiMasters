@@ -66,8 +66,8 @@ class Game{
         if(this.players.length == 1){
             this.pathTime = 0; //nobody to wait !
         }else{
-            //this.pathTime = 180000; //3 min
-            this.pathTime = 5000; //5 sec
+            this.pathTime = 180000; //3 min
+            //this.pathTime = 5000; //5 sec
         }
 		for (let player of this.players) {
 			this.scores.push([]);
@@ -100,13 +100,18 @@ class Game{
         this.questionsAsked += 1;
         //this.pathfind = [{id:9175315, title:'Courant magellanique'}, {id:64, title:'Astronomie'}];
         this.pathfind = [Q.Fetch(), Q.Fetch()];
+        if(this.pathfind[0].title == this.pathfind[1].title){
+            this.SendPathfind();
+            return;
+        }
         this.paths = [];
         for (let [i, player] of this.players.entries()) {
 			this.paths.push([[parseInt(this.pathfind[0].id), this.pathfind[0].title]]);
             this.scores[i].push(20000);
 			player.socket.emit("pathfind", {
                 start : this.pathfind[0],
-                end : this.pathfind[1]
+                end : this.pathfind[1],
+                isHost : player.pseudo == this.players[0].pseudo
             });
 		}
         this.status = "pathfind";
@@ -314,6 +319,19 @@ function ProcessPathResetRequest(socket){
     }
 }
 
+function ProcessNewPathRequest(socket){
+    for (let game of games) {
+		if(game.players[0].socket.id == socket.id){
+            game.questionsAsked -= 1;
+            for (let [i, player] of game.players.entries()) {
+                game.scores[i].pop();
+            }
+			game.SendPathfind();
+			break;
+		}
+	}
+}
+
 function ProcessPathStepRequest(socket, page){
     for (let [i, game] of games.entries()){
 		if(game.pathfind.length == 0){
@@ -401,4 +419,4 @@ function GenerateTag(){
 	return tag;
 }
 
-module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest, ProcessResetRequest, ProcessPathResetRequest, ProcessPathStepRequest, ProcessChangeGameOptionsRequest};
+module.exports = { Game, CreateGame, ProcessPlayerDisconnection, JoinGame, ProcessStartGameRequest, ProcessAnswerRequest, ProcessNextQuestionRequest, ProcessResetRequest, ProcessPathResetRequest, ProcessPathStepRequest, ProcessChangeGameOptionsRequest, ProcessNewPathRequest};

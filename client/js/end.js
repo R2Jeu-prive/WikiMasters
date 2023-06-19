@@ -43,11 +43,7 @@ $(document).ready(function() {
                 }
                 $("#player" + i).append("<td class='cells'>" + playerScore + "</td>")
             }
-            let min = Math.floor(totalScore/60000);
-			let sec = ("0" + (Math.floor((totalScore%60000)/1000))).slice(-2);
-			let mil = ("00" + (totalScore%1000)).slice(-3);
-			let time = min + ":" + sec + "." + mil + "s";
-            $("#player" + i).append("<td class='cells'>" + time + "</td>")
+            $("#player" + i).append("<td class='cells'>" + parseTime(totalScore) + "</td>")
         }
 
         $("#correction-screen").addClass("hidden-screen");
