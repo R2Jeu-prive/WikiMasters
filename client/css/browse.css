@@ -8,6 +8,7 @@
     display: flex;
     flex-direction: column;
     max-height: 100%;
+    align-items: center;
 }
 
 #browse-screen .pathfind > p{
@@ -27,7 +28,7 @@
     color: #1C4187;
     font-family: 'Kantumruy Pro', sans-serif;
     font-weight: 500;
-    font-size: 60px;
+    font-size: 50px;
     margin: 0 10px 0 0;
     opacity: 50%;
 }
@@ -48,6 +49,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    max-width: 80%;
 }
 
 #browse-screen .buttons{
@@ -67,8 +69,7 @@
     padding-top: 0px;
     background-color: #ffffff;
     box-sizing: border-box;
-    width: calc(100% - 30px);
-    max-width: 1000px;
+    max-width: min(1000px, 80%);
     height: auto;
     overflow-y: auto;
     overflow-x: auto;
