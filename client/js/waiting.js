@@ -6,7 +6,7 @@ $(document).ready(function() {
 
     socket.on("waitPath", (time) => {
         if(time == -20000){
-            $("#waiting-screen .time").text("Tu est le premier à trouver un chemin jusqu'à l'arrivée ! (-20s)");
+            $("#waiting-screen .time").text("Tu es le premier à trouver un chemin jusqu'à l'arrivée ! (-20s)");
         }else{
             $("#waiting-screen .time").text("Tu a trouvé un chemin jusqu'à l'arrivée ! (-10s)");
         }
