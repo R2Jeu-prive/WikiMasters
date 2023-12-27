@@ -44,10 +44,10 @@ for (let route of routes) {
 	app.use(route[0], router)
 }
 
-let server = app.listen(80, function(){
-  console.log("Web server is running on port 80");
-  console.log("to end press Ctrl + C");
+let server = app.listen(8001, function(){
+  console.log("WIKIMASTERS running on port 8001");
 });
+
 const io = new Server(server);
 
 io.on('connection', (socket) => {
